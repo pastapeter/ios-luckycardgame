@@ -67,6 +67,7 @@
  - 게임보드 화면 내 Player Board, Bottom Deck 동적 높이 계산
 
 ### 참고할점
+ - RoundBoardView, PlayerBoardView를 상속 관계
  - Player Board, Bottom Deck 관련 동적 높이 구현시 재귀를 사용하여 완전 탐색
  - PlayerBoardView에서 UILabel의 세로 가운데 정렬을 구현하기 위해, UILabel의 height과 parent View의 Height을 일치시켜줌
  - UILabel의 sizeToFit()를 활용하여, UILabel의 딱 맞는 intrinsicSize파악 한뒤, width만 사용
