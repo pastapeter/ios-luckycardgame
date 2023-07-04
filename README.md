@@ -1,6 +1,6 @@
 # iOS 학습 프로젝트
 
-## 학습 계획 
+## 학습 계획
 ### 1주차
 -  7/4
 게임 보드 만들기, 럭키카드 클래스 구현하기
@@ -14,11 +14,11 @@
 
 ## 프로그램 계획
 ### 7/4
-1. 게임 보드 만들기
+1.[게임 보드 만들기](#게임-보드-만들기)
 
 - 게임보드 만들기 요구사항 구현 2H
   - CUSTOM CLASS 정의하기 30M
-  - STACKVIEW로 VIEW 쌓기 + 위치 비율잡기 1H
+  - VIEW 쌓기 + 위치 비율잡기 1H
   - 색상 지정하기 30M
 
 - 추가 학습 거리(Info.plist 변경방식 정리) 1H
@@ -42,7 +42,7 @@
 
 - 메모리 분석하는 디버깅 도구 공부하기 1H
   - Xcode Memory Graph
-  - etc 
+  - etc
 
 - 기능요구사항, 프로그래밍 요구사항 로직 구현하기 2H
 - 기능요구사항, 프로그래밍 요구사항 뷰 구현하기 1H
@@ -54,7 +54,23 @@
 - 단위 테스트 구현하기 및 요구사항 정리 및 구현하기
   - 어떠한 유즈케이스가 있는지 정의하기 (팀 내에서 같이 정하면 좋을듯함) 1H
   - 단위 테스트 작성하고, 확인하기 2H
-  
+
 - 요구사항에 맞는 단위테스트를 정의하고 안될 경우 다시 고치는 방식으로 요구사항 구현하기 2H
 - 완성이 되지 않을 경우 추가 진행 2H
 
+### 게임 보드 만들기
+### 주요 작업
+ - 게임보드 화면 작업 진행
+ - 게임보드 화면 내 Player Board, Bottom Deck 동적 높이 계산
+
+### 참고할점
+ - RoundBoardView, PlayerBoardView를 상속 관계
+ - Player Board, Bottom Deck 관련 동적 높이 구현시 재귀를 사용하여 완전 탐색
+ - PlayerBoardView에서 UILabel의 세로 가운데 정렬을 구현하기 위해, UILabel의 height과 parent View의 Height을 일치시켜줌
+ - UILabel의 sizeToFit()를 활용하여, UILabel의 딱 맞는 intrinsicSize파악 한뒤, width만 사용
+ - Italic, Bold를 동시에 사용할 수 있는 Discriptor 코드를 사용
+
+### 스크린샷
+|기능|스크린샷|완성시간|
+|:--:|:--:|:--:|
+|- 게임 보드의 UI |<img src = "https://github.com/Keyneez/Keyneez-iOS/assets/69891604/e2dc33a4-f725-474c-b64e-d58b715a7cb6" width ="250">|2023.07.04 16:00|
