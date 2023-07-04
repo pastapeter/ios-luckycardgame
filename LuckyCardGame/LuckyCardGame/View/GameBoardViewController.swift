@@ -16,7 +16,7 @@ final class GameBoardViewController: UIViewController {
     static let topBoardHeight = 44
     static let horizontalPadding = 20
     static let topPadding = 70
-    static let bottomPadding = 20
+    static let bottomPadding = 50
     static let spacing = 10
   }
   
@@ -55,7 +55,7 @@ final class GameBoardViewController: UIViewController {
     override func viewDidLoad() {
       super.viewDidLoad()
       view.backgroundColor = .systemBackground
-      arrangeDynamicHeight()
+      calculateBoardHeight(start: 0)
       addsubview()
     }
   
@@ -66,18 +66,15 @@ final class GameBoardViewController: UIViewController {
     }
   }
   
-  private func arrangeDynamicHeight() {
-    let dynamicHeight = calculateBoardHeight(start: 0)
-    playerBoardHeight = dynamicHeight.0
-    bottomDockViewHeight = dynamicHeight.1
-  }
-  
-  private func calculateBoardHeight(start: Int) -> (Int, Int) {
+  private func calculateBoardHeight(start: Int) {
     let y = Int(screenHeight) - (Constant.topPadding + Constant.bottomPadding + Constant.topBoardHeight + (6*Constant.spacing) + 5*start)
-    if y <= start {
-      return (y, start)
+    if y > start {
+      playerBoardHeight = start
+      bottomDockViewHeight = y
+    } else {
+      return
     }
-    return calculateBoardHeight(start: start+1)
+    calculateBoardHeight(start: start+1)
   }
     
 }
