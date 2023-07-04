@@ -69,8 +69,7 @@
 ### 스크린샷
 |기능|스크린샷|완성시간|
 |:--:|:--:|:--:|
-|
-- 게임 보드의 UI |<img src = "https://github.com/Keyneez/Keyneez-iOS/assets/69891604/e2dc33a4-f725-474c-b64e-d58b715a7cb6" width ="250">|2023.07.04 16:00|
+|- 게임 보드의 UI |<img src = "https://github.com/Keyneez/Keyneez-iOS/assets/69891604/e2dc33a4-f725-474c-b64e-d58b715a7cb6" width ="250">|2023.07.04 16:00|
 
 
 >>>>>>> 66014b8 (update readme)
