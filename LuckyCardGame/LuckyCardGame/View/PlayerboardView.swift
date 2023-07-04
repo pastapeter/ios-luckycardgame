@@ -12,10 +12,9 @@ class PlayerboardView: RoundBoardView {
   private lazy var playerNameLabel: UILabel = {
     
     let label = UILabel()
-    
     label.text = "A"
     label.textColor = .gray.withAlphaComponent(0.5)
-    let descriptor = UIFont.systemFont(ofSize: 50).fontDescriptor
+    let descriptor = UIFont.systemFont(ofSize: 50, weight: .heavy).fontDescriptor
                 .withSymbolicTraits([.traitBold, .traitItalic])
     label.font = UIFont(descriptor: descriptor!, size: 50)
     return label
