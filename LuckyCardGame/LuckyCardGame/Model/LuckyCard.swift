@@ -16,7 +16,7 @@ import Foundation
 // swfit의 힙이 rc사이클 + 힙메모리 파편화까지 일어남
 
 protocol Card {
-  var type: CardType { get }
+  var type: CardEmojiType { get }
   var value: any CardValuable { get }
 }
 
@@ -47,10 +47,10 @@ class LuckyCard: Card, Hashable {
     hasher.combine(value.stringValue)
   }
     
-  var type: CardType
+  var type: CardEmojiType
   var value: any CardValuable
   
-  init(type: CardType, value: any CardValuable) throws {
+  init(type: CardEmojiType, value: any CardValuable) throws {
     try CardValueValidator.isvalid(value)
     self.type = type
     self.value = value

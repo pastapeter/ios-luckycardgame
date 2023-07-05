@@ -25,9 +25,9 @@ struct LuckyCardMaker {
     let randChoice = Int.random(in: (0...1))
     do {
       if randChoice == 0 {
-        return try LuckyCard(type: CardType.allCases[Int.random(in: (0...2))], value: makeIntCardValue())
+        return try LuckyCard(type: CardEmojiType.allCases[Int.random(in: (0...2))], value: makeIntCardValue())
       } else {
-        return try LuckyCard(type: CardType.allCases[Int.random(in: (0...2))], value: makeStrCardValue())
+        return try LuckyCard(type: CardEmojiType.allCases[Int.random(in: (0...2))], value: makeStrCardValue())
       }
     } catch(let e){
       print("Generate has Error with \(e.localizedDescription) so Goto Next iteration")

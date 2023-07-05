@@ -16,7 +16,7 @@ import Foundation
 // 많이 필요할 경우, protocol과 struct 혹은 protocol과 class로 변경해야한다.
 // CardType에 특정 함수나, 계산 속성이 들어간다고 했을떄, 하나만 적용시키는 일이 없도록
 
-enum CardType: Hashable, CaseIterable {
+enum CardEmojiType: Hashable, CaseIterable {
   
   case Dog
   case Cat

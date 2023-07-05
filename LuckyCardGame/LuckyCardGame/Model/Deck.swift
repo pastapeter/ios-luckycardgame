@@ -60,7 +60,7 @@ final class Deck: DeckProtocol {
 
 extension Deck: RandomBuildable {
   static func makeRandomly() -> Deck {
-    return Deck(cards: (0...(CardType.allCases.count * 12)).compactMap { _ in
+    return Deck(cards: (0...(CardEmojiType.allCases.count * 12)).compactMap { _ in
       LuckyCardMaker.generateRandomly()
     })
   }
