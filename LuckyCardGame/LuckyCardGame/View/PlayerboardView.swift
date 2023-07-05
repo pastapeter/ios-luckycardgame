@@ -21,18 +21,20 @@ class PlayerboardView: RoundBoardView {
   }()
   
   convenience init(frame: CGRect, name: String) {
-    self.init(frame: frame)
+    self.init(frame: frame, radius: 16)
     playerNameLabel.text = name
   }
   
-  init(frame: CGRect) {
+  override init(frame: CGRect) {
     super.init(frame: frame)
     addsubview()
     configureView()
   }
   
   required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
+    super.init(coder: coder)
+    addsubview()
+    configureView()
   }
   
   private func configureView() {
