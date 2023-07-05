@@ -57,6 +57,8 @@ final class GameBoardViewController: UIViewController {
       view.backgroundColor = .systemBackground
       calculateBoardHeight(start: 0)
       addsubview()
+      let deck = Deck.makeRandomly()
+      deck.printDeck()
     }
   
   func addsubview() {
