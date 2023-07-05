@@ -15,7 +15,7 @@ import Foundation
 // struct는 복사하기때문에, 내부 RC까지 복사가되서 RC가 높아짐
 // swfit의 힙이 rc사이클 + 힙메모리 파편화까지 일어남
 
-protocol Card {
+protocol Card: Hashable {
   var type: CardEmojiType { get }
   var value: any CardValuable { get }
 }
@@ -32,7 +32,7 @@ protocol Card {
  그래서 class로 지정한다.
  */
 
-class LuckyCard: Card, Hashable {
+class LuckyCard: Card {
   
   static func == (lhs: LuckyCard, rhs: LuckyCard) -> Bool {
     if lhs.type != rhs.type {

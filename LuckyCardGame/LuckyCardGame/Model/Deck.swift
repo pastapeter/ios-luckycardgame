@@ -25,22 +25,24 @@ enum DeckError: LocalizedError {
 /// Deck은 Class로 구현한다.
 /// 내부에 참조타입이 있는 경우, 보통 Class로 구현하는 편이다.
 /// 서로 다른 객체들이 서로 상태를 공유하거나 변경을 해야할때는 Class를 사용한다.
+///
 final class Deck: DeckProtocol {
   
-  var cards: [LuckyCard] = []
+  typealias DeckCard = LuckyCard
+  var cards: [DeckCard] = []
   
-  init(cards: [LuckyCard]) {
+  init(cards: [DeckCard]) {
     self.cards = cards
   }
   
-  func add(card: LuckyCard) throws {
+  func add(card: DeckCard) throws {
     if Set(cards).intersection(Set([card])).count > 0 {
       throw DeckError.DuplicateCard
     }
     cards.insert(card, at: 0)
   }
   
-  func removeLastCard() throws -> LuckyCard {
+  func removeLastCard() throws -> DeckCard {
     if cards.isEmpty { throw DeckError.DeckIsEmpty }
     return cards.removeLast()
   }

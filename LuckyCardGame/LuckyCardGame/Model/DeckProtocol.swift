@@ -8,9 +8,10 @@
 import Foundation
 
 protocol DeckProtocol {
-  var cards: [LuckyCard] { get }
-  func add(card: LuckyCard) throws
-  func removeLastCard() throws -> LuckyCard
+  associatedtype DeckCard
+  var cards: [DeckCard] { get }
+  func add(card: DeckCard) throws
+  func removeLastCard() throws -> DeckCard
   func shuffle()
   func printDeck()
 }
