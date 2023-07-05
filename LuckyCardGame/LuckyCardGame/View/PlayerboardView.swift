@@ -20,9 +20,13 @@ class PlayerboardView: RoundBoardView {
     return label
   }()
   
-  init(frame: CGRect, name: String) {
-    super.init(frame: frame)
+  convenience init(frame: CGRect, name: String) {
+    self.init(frame: frame)
     playerNameLabel.text = name
+  }
+  
+  init(frame: CGRect) {
+    super.init(frame: frame)
     addsubview()
     configureView()
   }
