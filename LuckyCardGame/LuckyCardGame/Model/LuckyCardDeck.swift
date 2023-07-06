@@ -26,7 +26,7 @@ enum DeckError: LocalizedError {
 /// 내부에 참조타입이 있는 경우, 보통 Class로 구현하는 편이다.
 /// 서로 다른 객체들이 서로 상태를 공유하거나 변경을 해야할때는 Class를 사용한다.
 ///
-final class Deck: DeckProtocol {
+final class LuckyCardDeck: Deck {
   
   typealias DeckCard = LuckyCard
   var cards: [DeckCard] = []
@@ -60,14 +60,14 @@ final class Deck: DeckProtocol {
   
 }
 
-extension Deck: RandomBuildable {
-  static func makeRandomly() -> Deck {
-    return Deck(cards: (0...(CardEmojiType.allCases.count * 12)).compactMap { _ in
+extension LuckyCardDeck: RandomBuildable {
+  static func makeRandomly() -> LuckyCardDeck {
+    return LuckyCardDeck(cards: (0...(CardEmojiType.allCases.count * 12)).compactMap { _ in
       LuckyCardMaker.generateRandomly()
     })
   }
   
-  static func make(cards: [LuckyCard]) -> Deck {
-    return Deck(cards: cards)
+  static func make(cards: [LuckyCard]) -> LuckyCardDeck {
+    return LuckyCardDeck(cards: cards)
   }
 }

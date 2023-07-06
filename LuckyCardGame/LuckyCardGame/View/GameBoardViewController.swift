@@ -22,7 +22,7 @@ final class GameBoardViewController: UIViewController {
   
   private var playerBoardHeight = 0
   private var bottomDockViewHeight = 0
-  private var deck: Deck?
+  private var deck: LuckyCardDeck?
   
   private var topBoard: RoundBoardView = {
     let topboard = RoundBoardView(frame: CGRect(x: Constant.horizontalPadding, y: Constant.topPadding, width: Int(screenWidth) - Constant.horizontalPadding * 2, height: Constant.topBoardHeight), radius: 16)
@@ -58,7 +58,7 @@ final class GameBoardViewController: UIViewController {
       view.backgroundColor = .systemBackground
       calculateBoardHeight(start: 0)
       addsubview()
-      deck = Deck.makeRandomly()
+      deck = LuckyCardDeck.makeRandomly()
       deck?.printDeck()
     }
   

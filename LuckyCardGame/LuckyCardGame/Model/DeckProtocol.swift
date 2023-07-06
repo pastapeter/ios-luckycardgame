@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol DeckProtocol {
+protocol Deck {
   associatedtype DeckCard
   var cards: [DeckCard] { get }
   func add(card: DeckCard) throws
