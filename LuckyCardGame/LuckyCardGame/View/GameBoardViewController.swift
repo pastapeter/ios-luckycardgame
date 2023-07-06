@@ -22,9 +22,10 @@ final class GameBoardViewController: UIViewController {
   
   private var playerBoardHeight = 0
   private var bottomDockViewHeight = 0
+  private var deck: Deck?
   
   private var topBoard: RoundBoardView = {
-    let topboard = RoundBoardView(frame: CGRect(x: Constant.horizontalPadding, y: Constant.topPadding, width: Int(screenWidth) - Constant.horizontalPadding * 2, height: Constant.topBoardHeight))
+    let topboard = RoundBoardView(frame: CGRect(x: Constant.horizontalPadding, y: Constant.topPadding, width: Int(screenWidth) - Constant.horizontalPadding * 2, height: Constant.topBoardHeight), radius: 16)
     topboard.backgroundColor = .yellow
     return topboard
   }()
@@ -47,7 +48,7 @@ final class GameBoardViewController: UIViewController {
       x: Constant.horizontalPadding,
       y: Int(lastBoardFrame.origin.y + lastBoardFrame.height) + Constant.spacing,
       width: Int(screenWidth) - Constant.horizontalPadding * 2,
-      height: bottomDockViewHeight))
+      height: bottomDockViewHeight), radius: 16)
     view.backgroundColor = .gray
     return view
   }()
@@ -57,6 +58,8 @@ final class GameBoardViewController: UIViewController {
       view.backgroundColor = .systemBackground
       calculateBoardHeight(start: 0)
       addsubview()
+      deck = Deck.makeRandomly()
+      deck?.printDeck()
     }
   
   func addsubview() {
