@@ -9,17 +9,22 @@ import UIKit
 
 class RoundBoardView: UIView {
   
-  convenience init(frame: CGRect, radius: Int = 16) {
-    self.init(frame: frame)
+  init(frame: CGRect, radius: Int) {
+    super.init(frame: frame)
     setRound(radius: radius)
   }
   
-  override init(frame: CGRect) {
-    super.init(frame: frame)
+  required init?(coder: NSCoder, radius: Int) {
+    super.init(coder: coder)
+    setRound(radius: radius)
   }
   
-  required init?(coder: NSCoder) {
-    super.init(coder: coder)
+  convenience override init(frame: CGRect) {
+    self.init(frame: frame, radius: 16)
+  }
+  
+  convenience required init?(coder: NSCoder) {
+    self.init(coder: coder, radius: 16)
   }
   
   func setRound(radius: Int) {
