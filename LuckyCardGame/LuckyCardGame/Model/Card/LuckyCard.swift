@@ -17,7 +17,7 @@ import Foundation
 
 protocol Card: Hashable {
   var type: CardEmojiType { get }
-  var value: any CardValuable { get }
+  var value: CardValue { get }
 }
 
 
@@ -38,20 +38,19 @@ class LuckyCard: Card {
     if lhs.type != rhs.type {
       return false
     } else {
-      return lhs.value.stringValue != rhs.value.stringValue
+      return lhs.value != rhs.value
     }
   }
   
   func hash(into hasher: inout Hasher) {
     hasher.combine(type)
-    hasher.combine(value.stringValue)
+    hasher.combine(value)
   }
     
   var type: CardEmojiType
-  var value: any CardValuable
+  var value: CardValue
   
-  init(type: CardEmojiType, value: any CardValuable) throws {
-    try CardValueValidator.isvalid(value)
+  init(type: CardEmojiType, value: CardValue) {
     self.type = type
     self.value = value
   }
