@@ -11,24 +11,17 @@ import Foundation
 /// func 자체가 공유해야하는 것도 없다. -> struct
 struct LuckyCardMaker {
   
-  static func makeIntCardValue() -> some CardValuable {
+  static func makeCardValue() throws -> CardValue {
     let intDb: [Int] = [1,2,3,4,5,6,7,8,9,10,11,12]
-    return intDb[Int.random(in: (0..<intDb.count))]
-  }
-  
-  static func makeStrCardValue() -> some CardValuable {
-    let strDb: [String] = ["K", "Q", "J" ]
-    return strDb[Int.random(in: (0..<strDb.count))]
+    guard let cardValue = CardValue(rawValue: intDb[Int.random(in: (0..<intDb.count))]) else {
+      throw NumberValidationError.notInOneToTweleve
+    }
+    return cardValue
   }
   
   static func generateRandomly() -> LuckyCard? {
-    let randChoice = Int.random(in: (0...1))
     do {
-      if randChoice == 0 {
-        return try LuckyCard(type: CardEmojiType.allCases[Int.random(in: (0...2))], value: makeIntCardValue())
-      } else {
-        return try LuckyCard(type: CardEmojiType.allCases[Int.random(in: (0...2))], value: makeStrCardValue())
-      }
+      return try LuckyCard(type: CardEmojiType.allCases[Int.random(in: (0...2))], value: makeCardValue())
     } catch(let e){
       print("Generate has Error with \(e.localizedDescription) so Goto Next iteration")
       return nil

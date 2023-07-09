@@ -36,14 +36,8 @@ enum StringValidationError: LocalizedError {
 
 struct CardValueValidator {
   
-  static func isvalid(_ value: some CardValuable) throws {
-    if let intValue = value as? Int {
-      try isvalidNumber(intValue)
-    } else if let strValue = value as? String {
-      try isvalidString(strValue)
-    } else {
-      throw CardValidationTypeError.unavailableType
-    }
+  static func isvalid(_ cardValue: CardValue) throws {
+    try isvalidNumber(cardValue.value)
   }
   
   static func isvalidString(_ string: String) throws {

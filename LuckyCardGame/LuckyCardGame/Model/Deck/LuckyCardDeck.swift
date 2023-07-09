@@ -54,7 +54,7 @@ final class LuckyCardDeck: Deck {
   
   func printDeck() {
     cards.forEach {
-      print("\($0.type.emojiUnicode)\($0.value.stringValue)", terminator: ", ")
+      print("\($0.type.emojiUnicode)\($0.value.description)", terminator: ", ")
     }
   }
   
@@ -65,6 +65,10 @@ extension LuckyCardDeck: RandomBuildable {
     return LuckyCardDeck(cards: (0...(CardEmojiType.allCases.count * 12)).compactMap { _ in
       LuckyCardMaker.generateRandomly()
     })
+  }
+  
+  static func make() -> LuckyCardDeck {
+    return LuckyCardDeck(cards: [])
   }
   
   static func make(cards: [LuckyCard]) -> LuckyCardDeck {

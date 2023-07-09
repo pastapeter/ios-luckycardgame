@@ -7,7 +7,11 @@
 
 import Foundation
 
-protocol RandomBuildable {
+protocol Buildable {
   associatedtype T
+  static func make() -> T
+}
+
+protocol RandomBuildable: Buildable {
   static func makeRandomly() -> T
 }
