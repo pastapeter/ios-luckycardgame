@@ -17,8 +17,8 @@ class FourPeopleGameStrategy: GameStrategy {
     }
     
     return LuckyGameInstruction(
-      cardsSplited:(0..<3).map { _ in return LuckyCardDeck(cards: deck.removeCards(number: 8)) },
-      cardsOnField: deck.removeCards(number: 9))
+      cardsSplited:(0..<3).map { _ in return LuckyCardDeck(cards: deck.removeLast(to: 8)) },
+      cardsOnField: deck.removeLast(to: 9))
 
   }
 }

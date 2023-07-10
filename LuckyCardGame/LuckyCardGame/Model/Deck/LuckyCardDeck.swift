@@ -10,6 +10,7 @@ import Foundation
 enum DeckError: LocalizedError {
   case DuplicateCard
   case DeckIsEmpty
+  case noCardInDeck
   
   var errorDescription: String? {
     switch self {
@@ -17,6 +18,8 @@ enum DeckError: LocalizedError {
       return "카드가 중복됩니다."
     case .DeckIsEmpty:
       return "덱에 카드가 없습니다."
+    case .noCardInDeck:
+      return "덱에 해당 카드가 없습니다."
     }
   }
 }
@@ -51,6 +54,24 @@ final class LuckyCardDeck: Deck {
     cards.shuffle()
   }
   
+  func remove(card: LuckyCard) throws {
+    if let index = cards.firstIndex(of: card) {
+      cards.remove(at: index)
+      return
+    }
+    throw DeckError.noCardInDeck
+  }
+  
+  func removeLast(to number: Int) -> [LuckyCard] {
+    var newCards: [LuckyCard] = []
+    if number <= 0 { return newCards }
+    for _ in (0..<number) {
+      do {
+        newCards.append(try self.removeLastCard())
+      } catch { break }
+    }
+    return newCards
+  }
   
   func printDeck() {
     cards.forEach {
