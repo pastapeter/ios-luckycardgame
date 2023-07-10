@@ -14,10 +14,21 @@ import Foundation
 // struct 내부에 참조타입이 있는지 확인해야함
 // struct는 복사하기때문에, 내부 RC까지 복사가되서 RC가 높아짐
 // swfit의 힙이 rc사이클 + 힙메모리 파편화까지 일어남
+enum CardStatus {
+  case up
+  case down
+}
 
-protocol Card: Hashable {
+protocol Card: AnyObject, Hashable {
+  var status: CardStatus { get set }
   var type: CardEmojiType { get }
   var value: CardValue { get }
+  
+  func flip()
+}
+
+extension Card {
+  func flip() { self.status = self.status == .down ? .up : .down }
 }
 
 
@@ -47,12 +58,18 @@ class LuckyCard: Card {
     hasher.combine(value)
   }
     
+  var status: CardStatus
   var type: CardEmojiType
   var value: CardValue
   
-  init(type: CardEmojiType, value: CardValue) {
+  init(type: CardEmojiType, value: CardValue, status: CardStatus) {
     self.type = type
     self.value = value
+    self.status = status
+  }
+  
+  convenience init(type: CardEmojiType, value: CardValue) {
+    self.init(type: type, value: value, status: .up)
   }
   
 }
