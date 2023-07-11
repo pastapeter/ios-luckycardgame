@@ -7,7 +7,7 @@
 
 import UIKit
 
-class PlayerboardView: RoundBoardView {
+final class PlayerboardView: RoundCardBoardView {
 
   private lazy var playerNameLabel: UILabel = {
     let label = UILabel()
@@ -50,6 +50,14 @@ class PlayerboardView: RoundBoardView {
   
   convenience required init?(coder: NSCoder) {
     self.init(coder: coder, radius: 16, name: "A")
+  }
+  
+  func removeAllCardView() {
+    for subview in subviews {
+      if subview is CardView {
+        subview.removeFromSuperview()
+      }
+    }
   }
   
   private func configureView() {

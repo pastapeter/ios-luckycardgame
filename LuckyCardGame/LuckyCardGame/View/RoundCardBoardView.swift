@@ -7,7 +7,7 @@
 
 import UIKit
 
-class RoundBoardView: UIView {
+class RoundCardBoardView: UIView, CardAddable {
   
   init(frame: CGRect, radius: Int) {
     super.init(frame: frame)
