@@ -8,7 +8,7 @@
 import Foundation
 
 protocol Deck {
-  associatedtype DeckCard
+  associatedtype DeckCard: Card
   var cards: [DeckCard] { get }
   func add(card: DeckCard) throws
   func removeLastCard() throws -> DeckCard

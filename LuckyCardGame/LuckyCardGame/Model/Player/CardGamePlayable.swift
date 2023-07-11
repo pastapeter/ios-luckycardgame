@@ -9,12 +9,18 @@ import Foundation
 
 protocol CardgamePlayerable: AnyObject, CardReceivable {
   var deck: CardDeck { get set }
+  var id: String { get }
   func drawCard() throws -> CardDeck.DeckCard
 }
 
 extension CardgamePlayerable {
   
   func receiveCard(_ card: CardDeck.DeckCard) {
+    
+    if self.id == currentUserName {
+      card.status = .up
+    }
+    
     do {
       try deck.add(card: card)
     } catch (let e) {

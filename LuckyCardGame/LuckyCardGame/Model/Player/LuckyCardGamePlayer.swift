@@ -9,13 +9,15 @@ import Foundation
 
 class LuckyCardGamePlayer: CardgamePlayerable {
   typealias CardDeck = LuckyCardDeck
+  var id: String
   var deck: CardDeck
   
-  init(deck: CardDeck) {
+  init(deck: CardDeck, id: String) {
     self.deck = deck
+    self.id = id
   }
   
-  convenience init() {
-    self.init(deck: LuckyCardDeck.make())
+  convenience init(id: String) {
+    self.init(deck: LuckyCardDeck.make(cards: []), id: id)
   }
 }
