@@ -8,10 +8,9 @@
 
 import Foundation
 
-
 final class LuckyCardDealer: CardgameDealable, CardReceivable {
   typealias CardDeck = LuckyCardDeck
-  private var deck: LuckyCardDeck
+  private(set) var deck: LuckyCardDeck
   private var gameStrategy: GameStrategy
   
   init(deck: LuckyCardDeck, strategy: GameStrategy) {

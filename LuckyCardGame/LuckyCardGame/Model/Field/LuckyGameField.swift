@@ -18,10 +18,11 @@ class LuckyGameField: CardReceivable {
   
   func receiveCard(_ card: LuckyCard) {
     do { try deck.add(card: card) }
-    catch (let e) { print(e.localizedDescription) }
+    catch (let e) {
+      print(e.localizedDescription) }
   }
   
   convenience init() {
-    self.init(deck: LuckyCardDeck.make())
+    self.init(deck: LuckyCardDeck.make(cards: []))
   }
 }
