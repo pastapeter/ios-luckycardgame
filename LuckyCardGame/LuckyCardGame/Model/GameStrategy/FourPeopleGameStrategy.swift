@@ -7,18 +7,11 @@
 
 import Foundation
 
-class FourPeopleGameStrategy: GameStrategy {
+final class FourPeopleGameStrategy: GameStrategy {
   func gameStartAlgorithm(_ deck: LuckyCardDeck) -> LuckyGameInstruction {
     deck.shuffle()
-    CardEmojiType.allCases.forEach {
-      do  {
-        try deck.remove(card: LuckyCard(type: $0, value: .twelve))
-      } catch (let e) { }
-    }
-    
     return LuckyGameInstruction(
       cardsSplited:(0..<4).map { _ in return LuckyCardDeck(cards: deck.removeLast(to: 7)) },
       cardsOnField: deck.removeLast(to: 8))
-
   }
 }
