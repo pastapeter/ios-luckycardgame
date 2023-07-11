@@ -16,7 +16,9 @@ class ThreePeopleGameStrategy: GameStrategy {
     CardEmojiType.allCases.forEach {
       do  {
         try deck.remove(card: LuckyCard(type: $0, value: .twelve))
-      } catch (let e) { }
+      } catch (let e) {
+        print(e.localizedDescription)
+      }
     }
     
     return LuckyGameInstruction(

@@ -17,8 +17,8 @@ final class FivePeopleGameStrategy: GameStrategy {
     }
     
     return LuckyGameInstruction(
-      cardsSplited:(0..<3).map { _ in return LuckyCardDeck(cards: deck.removeLast(to: 8)) },
-      cardsOnField: deck.removeLast(to: 9))
+      cardsSplited:(0..<5).map { _ in return LuckyCardDeck(cards: deck.removeLast(to: 6)) },
+      cardsOnField: deck.removeLast(to: 6))
 
   }
 }

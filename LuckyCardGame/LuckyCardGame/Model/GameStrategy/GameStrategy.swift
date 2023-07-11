@@ -16,7 +16,8 @@ protocol GameStrategy {
   func gameStartAlgorithm(_ deck: LuckyCardDeck) -> LuckyGameInstruction
 }
 
-enum NumberOfPlayer: Int {
+enum NumberOfPlayer: Int, CaseIterable {
+  
   case three = 3
   case four = 4
   case five = 5
