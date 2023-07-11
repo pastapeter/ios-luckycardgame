@@ -20,7 +20,7 @@ import Foundation
 /*
  enum을 활용하여, CardValue가 될 수 있는 것을 제한한다.
  */
-enum CardValue: Int, CustomStringConvertible {
+enum CardValue: Int, CustomStringConvertible, CaseIterable {
   
   case one = 1
   case two

@@ -49,7 +49,7 @@ class LuckyCard: Card {
     if lhs.type != rhs.type {
       return false
     } else {
-      return lhs.value != rhs.value
+      return lhs.value == rhs.value
     }
   }
   
@@ -69,7 +69,7 @@ class LuckyCard: Card {
   }
   
   convenience init(type: CardEmojiType, value: CardValue) {
-    self.init(type: type, value: value, status: .up)
+    self.init(type: type, value: value, status: .down)
   }
   
 }
