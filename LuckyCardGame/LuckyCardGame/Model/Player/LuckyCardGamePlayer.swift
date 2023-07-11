@@ -18,6 +18,6 @@ class LuckyCardGamePlayer: CardgamePlayerable {
   }
   
   convenience init(id: String) {
-    self.init(deck: LuckyCardDeck.make(cards: []), id: id)
+    self.init(deck: LuckyCardDeck(cards: []), id: id)
   }
 }

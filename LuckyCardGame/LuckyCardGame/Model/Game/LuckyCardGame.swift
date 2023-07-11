@@ -11,14 +11,16 @@ enum GameError: Error {
   case invalidNumberofPlayer
 }
 
-protocol Game: AnyObject {
+protocol Game {
+  var players: [LuckyCardGamePlayer] { get }
+  var field: LuckyGameField { get }
   func startGame()
 }
 
 class LuckyCardGame: Game {
   
-  private var players: [LuckyCardGamePlayer]
-  private var field: LuckyGameField
+  private(set) var players: [LuckyCardGamePlayer]
+  private(set) var field: LuckyGameField
   private var dealer: LuckyCardDealer
   private var gameStrategy: GameStrategy
   
@@ -36,9 +38,10 @@ class LuckyCardGame: Game {
 extension LuckyCardGame {
   
   convenience init(numberOfPlayer: NumberOfPlayer) {
-    let players = (0..<numberOfPlayer.rawValue).map { _ in LuckyCardGamePlayer() }
+    let players = (0..<numberOfPlayer.rawValue).enumerated().map { LuckyCardGamePlayer(id: PlayerDataBase.currentPlayerName[$1])
+    }
     let strategy = numberOfPlayer.strategy
-    let dealer = LuckyCardDealer(deck: LuckyCardDeck.make(), strategy: strategy)
+    let dealer = LuckyCardDealer(deck: LuckyCardDeck(), strategy: strategy)
     self.init(players: players, dealer: dealer, gameStrategy: strategy)
   }
   
@@ -46,7 +49,7 @@ extension LuckyCardGame {
     guard let strategy = NumberOfPlayer(rawValue: players.count)?.strategy else {
       throw GameError.invalidNumberofPlayer
     }
-    let dealer = LuckyCardDealer(deck: LuckyCardDeck.make(), strategy: strategy)
+    let dealer = LuckyCardDealer(deck: LuckyCardDeck(), strategy: strategy)
     self.init(players: players, dealer: dealer, gameStrategy: strategy)
   }
   

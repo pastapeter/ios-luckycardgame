@@ -23,6 +23,6 @@ class LuckyGameField: CardReceivable {
   }
   
   convenience init() {
-    self.init(deck: LuckyCardDeck.make(cards: []))
+    self.init(deck: LuckyCardDeck(cards: []))
   }
 }

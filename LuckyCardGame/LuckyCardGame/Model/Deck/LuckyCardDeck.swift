@@ -38,6 +38,16 @@ final class LuckyCardDeck: Deck {
     self.cards = cards
   }
   
+  convenience init() {
+    var cards: [DeckCard] = []
+    for emoji in CardEmojiType.allCases {
+      for value in CardValue.allCases {
+        cards.append(LuckyCard(type: emoji, value: value))
+      }
+    }
+    self.init(cards: cards)
+  }
+  
   func add(card: DeckCard) throws {
     if Set(cards).intersection(Set([card])).count > 0 {
       throw DeckError.DuplicateCard
@@ -86,13 +96,5 @@ extension LuckyCardDeck: RandomBuildable {
     return LuckyCardDeck(cards: (0...(CardEmojiType.allCases.count * 12)).compactMap { _ in
       LuckyCardMaker.generateRandomly()
     })
-  }
-  
-  static func make() -> LuckyCardDeck {
-    return LuckyCardDeck(cards: [])
-  }
-  
-  static func make(cards: [LuckyCard]) -> LuckyCardDeck {
-    return LuckyCardDeck(cards: cards)
   }
 }
