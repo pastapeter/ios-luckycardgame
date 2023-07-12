@@ -11,40 +11,67 @@ struct GameBoardViewCalculator {
   
   private typealias Constant = GameBoardViewController.Constant
   
-  static func calculateCardFramesInField(numberOfCards: Int, cardHeight: Int) -> [CGRect] {
+  static func calculateCardFramesInField(numberOfCards: Int, cardHeight: Int, boardHeight: Int) -> [CGRect] {
     // 더 클 때
     var cacheFrame = CGRect(x: Constant.horizontalPadding / 2, y: 0, width: Constant.cardWidth, height: cardHeight)
-    if Constant.horizontalPadding + (numberOfCards * Constant.cardWidth) > (Int(screenHeight) - Constant.horizontalPadding * 2) {
-        return []
+    var devidence = 1
+    var numberOfCards = numberOfCards
+    // 몇줄로 표현할것인지
+    while Constant.horizontalPadding + (numberOfCards / devidence * Constant.cardWidth) > (Int(screenWidth) - Constant.horizontalPadding * 2) {
+      devidence += 1
     }
-    let spacing = abs(calculateOverrlappedWidth(numberOfCard: numberOfCards))
-    return (0..<numberOfCards).map { idx in
-      let curFrame = cacheFrame
-      cacheFrame.origin.x = CGFloat(Int(curFrame.origin.x) + Constant.cardWidth + spacing)
-      return curFrame
+    let verticalGap = (boardHeight - cardHeight * devidence) / (devidence+1)
+    cacheFrame.origin.y += CGFloat(verticalGap)
+    var cardInRow = Int(ceil(Double(numberOfCards) / Double(devidence)))
+    
+    // 한줄로 표현
+    if cardInRow == numberOfCards {
+      let spacing = abs(calculateOverrlappedWidth(numberOfCard: cardInRow))
+      return (0..<numberOfCards).map { idx in
+        let curFrame = cacheFrame
+        cacheFrame.origin.x = CGFloat(Int(curFrame.origin.x) + Constant.cardWidth + spacing)
+        return curFrame
+      }
+    } else {
+      let spacing = abs(calculateOverrlappedWidth(numberOfCard: cardInRow))
+      let firstFrame: CGRect = cacheFrame
+      var cardFrames: [CGRect] = []
+      while numberOfCards > 0 {
+        let cardFramesInaRow = (0..<cardInRow).map { idx in
+          let curFrame = cacheFrame
+          cacheFrame.origin.x = CGFloat(Int(curFrame.origin.x) + Constant.cardWidth + spacing)
+          return curFrame
+        }
+        cardFrames += cardFramesInaRow
+        numberOfCards -= cardInRow
+        cardInRow = numberOfCards
+        cacheFrame = firstFrame
+        cacheFrame.origin.y += CGFloat(cardHeight + verticalGap)
+      }
+      return cardFrames
     }
   }
   
   //Board의 카드 Frame 계산한다.
-  static func calculateCardFrame(by index: Int, overlappedWidth: Int, height: Int) -> CGRect {
+  static func calculateCardFrameInPlayerBoard(by index: Int, overlappedWidth: Int, height: Int) -> CGRect {
     return CGRect(
       x: index*Int((Constant.cardWidth - overlappedWidth)) + Constant.horizontalPadding / 2,
-      y: 0,
+      y: Constant.cardPadding / 2,
       width: Int(GameBoardViewController.Constant.cardWidth),
-      height: height - 10)
+      height: height - Constant.cardPadding)
   }
   
   // BoardView의 Height을 계산한다.
-  static func calculateBoardHeight(start: Int, numberOfBoardNeeded: Int) -> (playerBoardHeight: Int, bottomDockViewHeight: Int) {
+  static func calculateViewHeight(start: Int, numberOfBoardNeeded: Int) -> (playerBoardHeight: Int, bottomDockViewHeight: Int, cardHeight: Int) {
     var needed = numberOfBoardNeeded
     if numberOfBoardNeeded == 3 { needed = 4 }
     let y = Int(screenHeight) - (Constant.topPadding + Constant.bottomPadding + Constant.topBoardHeight + ((needed+1)*Constant.spacing) + needed*start)
     if numberOfBoardNeeded >= 5 {
-      if y > start { return calculateBoardHeight(start: start+1, numberOfBoardNeeded: needed) }
-      else { return (y, start )}
+      if y > start { return calculateViewHeight(start: start+1, numberOfBoardNeeded: needed) }
+      else { return (y, start, y - Constant.cardPadding)}
     } else {
-      if y > start*2 { return calculateBoardHeight(start: start+1, numberOfBoardNeeded: needed) }
-      else { return (start, y)}
+      if y > start*2 { return calculateViewHeight(start: start+1, numberOfBoardNeeded: needed) }
+      else { return (start, y, start - Constant.cardPadding)}
     }
   }
   

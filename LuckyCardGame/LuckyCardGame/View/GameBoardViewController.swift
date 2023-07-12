@@ -15,6 +15,7 @@ final class GameBoardViewController: UIViewController {
   enum Constant {
     static let topBoardHeight = 44
     static let horizontalPadding = 20
+    static let cardPadding = 10
     static let topPadding = 70
     static let bottomPadding = 50
     static let spacing = 10
@@ -23,6 +24,7 @@ final class GameBoardViewController: UIViewController {
   
   private var playerBoardHeight = 0
   private var bottomDockViewHeight = 0
+  private var cardHeight = 0
   private var viewModel: GameBoardViewModel
   
   private lazy var gamePlayerSegmentControl: UISegmentedControl = {
@@ -90,6 +92,7 @@ final class GameBoardViewController: UIViewController {
       self?.playerBoards.forEach {
         $0.removeAllCardView()
       }
+      self?.bottomDockView.removeAllCardView()
     }
     
     viewModel.didChangeNumberOfPlayer = { [weak self] game in
@@ -112,7 +115,7 @@ final class GameBoardViewController: UIViewController {
 extension GameBoardViewController {
   
   private func setgameBoard() {
-    (playerBoardHeight, bottomDockViewHeight) = GameBoardViewCalculator.calculateBoardHeight(start: 0, numberOfBoardNeeded: viewModel.numberOfPlayers)
+    (playerBoardHeight, bottomDockViewHeight, cardHeight) = GameBoardViewCalculator.calculateViewHeight(start: 0, numberOfBoardNeeded: viewModel.numberOfPlayers)
     setupBoardHidden()
     arrangePlayerBoardViewFrame()
     arrangeBottomDockViewFrame()
@@ -139,7 +142,7 @@ extension GameBoardViewController {
   private func lastPlayerBoardFrame() -> CGRect {
     var lastBoardBottomOriginFrame = playerBoards[viewModel.numberOfPlayers - 1].frame
     if viewModel.numberOfPlayers == 3 {
-      lastBoardBottomOriginFrame = playerBoards[viewModel.numberOfPlayers].frame
+      lastBoardBottomOriginFrame.origin.y += playerBoards[0].frame.height + CGFloat(Constant.spacing)
     }
     return lastBoardBottomOriginFrame
   }
@@ -160,14 +163,14 @@ extension GameBoardViewController {
     if cardReceivable is LuckyCardGamePlayer {
       
       cardviews = cardReceivable.deck.cards.enumerated().map {
-        let cardView = CardView(frame: GameBoardViewCalculator.calculateCardFrame(by: $0,                                          overlappedWidth: overlappedWidth, height: self.playerBoardHeight)
+        let cardView = CardView(frame: GameBoardViewCalculator.calculateCardFrameInPlayerBoard(by: $0,                                          overlappedWidth: overlappedWidth, height: self.playerBoardHeight)
         )
         if $1.status == .up { cardView.flip() }
         return cardView
       }
       
     } else if cardReceivable is LuckyGameField {
-      let frames = GameBoardViewCalculator.calculateCardFramesInField(numberOfCards: cardReceivable.deck.cards.count, cardHeight: self.playerBoardHeight)
+      let frames = GameBoardViewCalculator.calculateCardFramesInField(numberOfCards: cardReceivable.deck.cards.count, cardHeight: self.cardHeight, boardHeight: self.bottomDockViewHeight)
       cardviews = frames.map { CardView(frame: $0) }
       }
     return cardviews
