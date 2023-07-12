@@ -8,7 +8,7 @@
 import UIKit
 
 let currentUserName = "A"
-let currentPlayerCount: NumberOfPlayer =  .five
+let currentPlayerCount: NumberOfPlayer =  .three
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
