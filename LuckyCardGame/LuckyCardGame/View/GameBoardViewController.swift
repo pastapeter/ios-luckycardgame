@@ -58,14 +58,14 @@ final class GameBoardViewController: UIViewController {
     bind()
   }
   
-    override func viewDidLoad() {
-      super.viewDidLoad()
-      view.backgroundColor = .systemBackground
-      setgameBoard()
-      addsubview()
-      configureGameSegmentControl()
-      viewModel.startGame()
-    }
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    view.backgroundColor = .systemBackground
+    setgameBoard()
+    addsubview()
+    configureGameSegmentControl()
+    startGame()
+  }
   
   private func addsubview() {
     let views = [gamePlayerSegmentControl, bottomDockView] + playerBoards
@@ -74,18 +74,13 @@ final class GameBoardViewController: UIViewController {
     }
   }
   
+  // MARK: - Bind
+  
   func bind() {
     
     viewModel.didStartGame = { [weak self] game in
       guard let self else { return }
-      
-      game.players.enumerated().forEach { index, player in
-        let cardviews = self.makeCardViews(to: player)
-        self.playerBoards[index].addCardViews(with: cardviews)
-      }
-      
-      let fieldCardViews = self.makeCardViews(to: game.field)
-      self.bottomDockView.addCardViews(with: fieldCardViews)
+      self.updateGameUIWhenStart(game: game)
     }
     
     viewModel.clearGame = { [weak self] in
@@ -98,21 +93,29 @@ final class GameBoardViewController: UIViewController {
     viewModel.didChangeNumberOfPlayer = { [weak self] game in
       guard let self else { return }
       self.setgameBoard()
-      game.players.enumerated().forEach { index, player in
-        let cardviews = self.makeCardViews(to: player)
-        self.playerBoards[index].addCardViews(with: cardviews)
-      }
-      
-      let fieldCardViews = self.makeCardViews(to: game.field)
-      self.bottomDockView.addCardViews(with: fieldCardViews)
+      self.updateGameUIWhenStart(game: game)
     }
     
   }
-    
+  
 }
 
 // MARK: - private Method
 extension GameBoardViewController {
+  
+  private func updateGameUIWhenStart(game: Game) {
+    game.players.enumerated().forEach { index, player in
+      let cardviews = self.makeCardViews(to: player)
+      self.playerBoards[index].addCardViews(with: cardviews)
+    }
+    
+    let fieldCardViews = self.makeCardViews(to: game.field)
+    self.bottomDockView.addCardViews(with: fieldCardViews)
+  }
+  
+  private func startGame() {
+    viewModel.startGame()
+  }
   
   private func setgameBoard() {
     (playerBoardHeight, bottomDockViewHeight, cardHeight) = GameBoardViewCalculator.calculateViewHeight(start: 0, numberOfBoardNeeded: viewModel.numberOfPlayers)
@@ -136,7 +139,7 @@ extension GameBoardViewController {
   
   private func arrangeBottomDockViewFrame() {
     self.bottomDockView.frame = GameBoardViewCalculator.calculateBottomDockViewFrame(from: lastPlayerBoardFrame(), height: self.bottomDockViewHeight)
-
+    
   }
   
   private func lastPlayerBoardFrame() -> CGRect {
@@ -163,16 +166,17 @@ extension GameBoardViewController {
     if cardReceivable is LuckyCardGamePlayer {
       
       cardviews = cardReceivable.deck.cards.enumerated().map {
-        let cardView = CardView(frame: GameBoardViewCalculator.calculateCardFrameInPlayerBoard(by: $0,                                          overlappedWidth: overlappedWidth, height: self.playerBoardHeight)
+        let cardView = CardView(frame: GameBoardViewCalculator.calculateCardFrameInPlayerBoard(by: $0,                                          overlappedWidth: overlappedWidth, height: self.playerBoardHeight), cardInfo: $1
         )
-        if $1.status == .up { cardView.flip() }
         return cardView
       }
       
     } else if cardReceivable is LuckyGameField {
       let frames = GameBoardViewCalculator.calculateCardFramesInField(numberOfCards: cardReceivable.deck.cards.count, cardHeight: self.cardHeight, boardHeight: self.bottomDockViewHeight)
-      cardviews = frames.map { CardView(frame: $0) }
+      return zip(cardReceivable.deck.cards, frames).map { card, frame in
+        CardView(frame: frame, cardInfo: card)
       }
+    }
     return cardviews
   }
   
