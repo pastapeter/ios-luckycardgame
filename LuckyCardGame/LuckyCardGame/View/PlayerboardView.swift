@@ -52,14 +52,6 @@ final class PlayerboardView: RoundCardBoardView {
     self.init(coder: coder, radius: 16, name: "A")
   }
   
-  func removeAllCardView() {
-    for subview in subviews {
-      if subview is CardView {
-        subview.removeFromSuperview()
-      }
-    }
-  }
-  
   private func configureView() {
     backgroundColor = .systemGray5
   }
