@@ -19,7 +19,7 @@ enum CardStatus {
   case down
 }
 
-protocol Card: AnyObject, Hashable {
+protocol Card: AnyObject, Hashable, Comparable {
   var status: CardStatus { get set }
   var type: CardEmojiType { get }
   var value: CardValue { get }
@@ -44,6 +44,11 @@ extension Card {
  */
 
 class LuckyCard: Card {
+  
+  static func < (lhs: LuckyCard, rhs: LuckyCard) -> Bool {
+    lhs.value < rhs.value
+  }
+  
   
   static func == (lhs: LuckyCard, rhs: LuckyCard) -> Bool {
     if lhs.type != rhs.type {
