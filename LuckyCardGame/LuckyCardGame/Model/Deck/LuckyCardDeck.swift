@@ -10,6 +10,7 @@ import Foundation
 enum DeckError: LocalizedError {
   case DuplicateCard
   case DeckIsEmpty
+  case noCardInDeck
   
   var errorDescription: String? {
     switch self {
@@ -17,6 +18,8 @@ enum DeckError: LocalizedError {
       return "카드가 중복됩니다."
     case .DeckIsEmpty:
       return "덱에 카드가 없습니다."
+    case .noCardInDeck:
+      return "덱에 해당 카드가 없습니다."
     }
   }
 }
@@ -26,13 +29,23 @@ enum DeckError: LocalizedError {
 /// 내부에 참조타입이 있는 경우, 보통 Class로 구현하는 편이다.
 /// 서로 다른 객체들이 서로 상태를 공유하거나 변경을 해야할때는 Class를 사용한다.
 ///
-final class Deck: DeckProtocol {
+final class LuckyCardDeck: Deck {
   
   typealias DeckCard = LuckyCard
   var cards: [DeckCard] = []
   
   init(cards: [DeckCard]) {
     self.cards = cards
+  }
+  
+  convenience init() {
+    var cards: [DeckCard] = []
+    for emoji in CardEmojiType.allCases {
+      for value in CardValue.allCases {
+        cards.append(LuckyCard(type: emoji, value: value))
+      }
+    }
+    self.init(cards: cards)
   }
   
   func add(card: DeckCard) throws {
@@ -51,23 +64,37 @@ final class Deck: DeckProtocol {
     cards.shuffle()
   }
   
+  func remove(card: LuckyCard) throws {
+    if let index = cards.firstIndex(of: card) {
+      cards.remove(at: index)
+      return
+    }
+    throw DeckError.noCardInDeck
+  }
+  
+  func removeLast(to number: Int) -> [LuckyCard] {
+    var newCards: [LuckyCard] = []
+    if number <= 0 { return newCards }
+    for _ in (0..<number) {
+      do {
+        newCards.append(try self.removeLastCard())
+      } catch { break }
+    }
+    return newCards
+  }
   
   func printDeck() {
     cards.forEach {
-      print("\($0.type.emojiUnicode)\($0.value.stringValue)", terminator: ", ")
+      print("\($0.type.emojiUnicode)\($0.value.description)", terminator: ", ")
     }
   }
   
 }
 
-extension Deck: RandomBuildable {
-  static func makeRandomly() -> Deck {
-    return Deck(cards: (0...(CardEmojiType.allCases.count * 12)).compactMap { _ in
+extension LuckyCardDeck: RandomBuildable {
+  static func makeRandomly() -> LuckyCardDeck {
+    return LuckyCardDeck(cards: (0...(CardEmojiType.allCases.count * 12)).compactMap { _ in
       LuckyCardMaker.generateRandomly()
     })
-  }
-  
-  static func make(cards: [LuckyCard]) -> Deck {
-    return Deck(cards: cards)
   }
 }

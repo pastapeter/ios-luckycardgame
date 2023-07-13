@@ -7,10 +7,9 @@
 
 import UIKit
 
-class PlayerboardView: RoundBoardView {
+final class PlayerboardView: RoundCardBoardView {
 
   private lazy var playerNameLabel: UILabel = {
-    
     let label = UILabel()
     label.text = "A"
     label.textColor = .gray.withAlphaComponent(0.5)
@@ -20,21 +19,37 @@ class PlayerboardView: RoundBoardView {
     return label
   }()
   
-  convenience init(frame: CGRect, name: String) {
-    self.init(frame: frame, radius: 16)
+  init(frame: CGRect, radius: Int, name: String) {
+    super.init(frame: frame, radius: 16)
     playerNameLabel.text = name
-  }
-  
-  override init(frame: CGRect) {
-    super.init(frame: frame)
     addsubview()
     configureView()
   }
   
-  required init?(coder: NSCoder) {
-    super.init(coder: coder)
+  convenience init(frame: CGRect, name: String) {
+    self.init(frame: frame, radius: 16, name: name)
+  }
+  
+  required init?(coder: NSCoder, radius: Int, name: String) {
+    super.init(coder: coder, radius: radius)
+    playerNameLabel.text = name
     addsubview()
     configureView()
+  }
+  
+  required init?(coder: NSCoder, radius: Int) {
+    super.init(coder: coder, radius: radius)
+    playerNameLabel.text = ""
+    addsubview()
+    configureView()
+  }
+  
+  convenience required init?(coder: NSCoder, name: String) {
+    self.init(coder: coder, radius: 16, name: name)
+  }
+  
+  convenience required init?(coder: NSCoder) {
+    self.init(coder: coder, radius: 16, name: "A")
   }
   
   private func configureView() {

@@ -7,10 +7,12 @@
 
 import UIKit
 
+let currentUserName = "A"
+let currentPlayerCount: NumberOfPlayer =  .three
+
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
   var window: UIWindow?
-
 
   func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
     if let windowScene = scene as? UIWindowScene {
@@ -18,7 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       let window = UIWindow(windowScene: windowScene)
       window.overrideUserInterfaceStyle = UIUserInterfaceStyle.light
       
-      window.rootViewController = GameBoardViewController()
+      window.rootViewController = GameBoardViewController(viewModel: GameBoardViewModel(game: LuckyCardGame(numberOfPlayer: currentPlayerCount)))
       window.makeKeyAndVisible()
       self.window = window
     }

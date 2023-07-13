@@ -6,11 +6,6 @@
 //
 
 import Foundation
-
-protocol StringConvertible {
-  var stringValue: String { get }
-}
-
 /*
  CardValue는 LuckyCard 내부에 값이다.
  OCP를 구현하기 위해서 protocol을 사용하여 구현했다.
@@ -20,22 +15,32 @@ protocol StringConvertible {
  각 자료형에 CardValuable 을 채택하게 하면, Cardvalue에 들어갈수 있는 자료형은 늘어나게 되고
  결국은 확장에 매우 강하게 된다.
  */
-protocol CardValuable: Hashable, StringConvertible {
-  var cardValue: Self { get }
-}
 
-extension Int: CardValuable {
-  var stringValue: String {
-    return String(format: "%02d", self)
+// MARK: - 변경사항
+/*
+ enum을 활용하여, CardValue가 될 수 있는 것을 제한한다.
+ */
+enum CardValue: Int, CustomStringConvertible, CaseIterable {
+  
+  case one = 1
+  case two
+  case three
+  case four
+  case five
+  case six
+  case seven
+  case eight
+  case nine
+  case ten
+  case eleven
+  case twelve
+  
+  var value: Int {
+    return self.rawValue
   }
   
-  var cardValue: Int { return self }
-}
-
-extension String: CardValuable {
-  var stringValue: String {
-    return self
+  var description: String {
+    return String(format: "%02d", self.rawValue)
   }
   
-  var cardValue: String { return self }
 }

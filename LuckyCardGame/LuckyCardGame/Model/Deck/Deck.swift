@@ -7,11 +7,13 @@
 
 import Foundation
 
-protocol DeckProtocol {
-  associatedtype DeckCard
+protocol Deck {
+  associatedtype DeckCard: Card
   var cards: [DeckCard] { get }
   func add(card: DeckCard) throws
   func removeLastCard() throws -> DeckCard
+  func remove(card: DeckCard) throws
+  func removeLast(to number: Int) -> [DeckCard]
   func shuffle()
   func printDeck()
 }
