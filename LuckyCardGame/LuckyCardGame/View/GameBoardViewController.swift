@@ -159,21 +159,20 @@ extension GameBoardViewController {
     gamePlayerSegmentControl.addAction(action, for: .valueChanged)
   }
   
-  private func makeCardViews(to cardReceivable: some CardReceivable) -> [CardView] {
-    let overlappedWidth = GameBoardViewCalculator.calculateOverrlappedWidth(numberOfCard: cardReceivable.deck.cards.count)
+  private func makeCardViews(to receiver: some CardGameBoardComponent) -> [CardView] {
+    let overlappedWidth = GameBoardViewCalculator.calculateOverrlappedWidth(numberOfCard: receiver.count())
     var cardviews: [CardView] = []
     
-    if cardReceivable is LuckyCardGamePlayer {
-      
-      cardviews = cardReceivable.deck.cards.enumerated().map {
+    if receiver is LuckyCardGamePlayer {
+      cardviews = receiver.cards.enumerated().map {
         let cardView = CardView(frame: GameBoardViewCalculator.calculateCardFrameInPlayerBoard(by: $0,                                          overlappedWidth: overlappedWidth, height: self.playerBoardHeight), cardInfo: $1
         )
         return cardView
       }
       
-    } else if cardReceivable is LuckyGameField {
-      let frames = GameBoardViewCalculator.calculateCardFramesInField(numberOfCards: cardReceivable.deck.cards.count, cardHeight: self.cardHeight, boardHeight: self.bottomDockViewHeight)
-      return zip(cardReceivable.deck.cards, frames).map { card, frame in
+    } else if receiver is LuckyGameField {
+      let frames = GameBoardViewCalculator.calculateCardFramesInField(numberOfCards: receiver.count(), cardHeight: self.cardHeight, boardHeight: self.bottomDockViewHeight)
+      return zip(receiver.cards, frames).map { card, frame in
         CardView(frame: frame, cardInfo: card)
       }
     }

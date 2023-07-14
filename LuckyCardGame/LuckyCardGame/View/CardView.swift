@@ -35,8 +35,8 @@ final class CardView: RoundView {
     return backView
   }()
   
-  private lazy var topValueLabel = makeCardViewLabel(location: .left_top, text: cardInfo.value.description)
-  private lazy var bottomValueLabel = makeCardViewLabel(location: .right_bottom, text: cardInfo.value.description)
+  private lazy var topValueLabel = makeCardViewLabel(location: .left_top, text: "\(cardInfo.value.rawValue)")
+  private lazy var bottomValueLabel = makeCardViewLabel(location: .right_bottom, text: "\(cardInfo.value.rawValue)")
   private lazy var emojiLabel = makeCardViewLabel(location: .mid, text: cardInfo.type.emojiUnicode)
   
   private var cardInfo: any Card

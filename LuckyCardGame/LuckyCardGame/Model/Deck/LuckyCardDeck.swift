@@ -32,7 +32,7 @@ enum DeckError: LocalizedError {
 final class LuckyCardDeck: Deck {
   
   typealias DeckCard = LuckyCard
-  var cards: [DeckCard] = []
+  private(set) var cards: [DeckCard] = []
   
   init(cards: [DeckCard]) {
     self.cards = cards
@@ -46,6 +46,10 @@ final class LuckyCardDeck: Deck {
       }
     }
     self.init(cards: cards)
+  }
+  
+  func count() -> Int {
+    return cards.count
   }
   
   func add(card: DeckCard) throws {
@@ -89,12 +93,25 @@ final class LuckyCardDeck: Deck {
     }
   }
   
+  func sort(ascending: Bool = true) {
+    if ascending {
+      cards.sort(by: <)
+    } else {
+      cards.sort(by: >)
+    }
+    
+  }
+  
+  func search(where predicate: (LuckyCard) -> Bool) -> Bool {
+    return cards.contains(where: predicate)
+  }
+  
 }
 
 extension LuckyCardDeck: RandomBuildable {
   static func makeRandomly() -> LuckyCardDeck {
     return LuckyCardDeck(cards: (0...(CardEmojiType.allCases.count * 12)).compactMap { _ in
-      LuckyCardMaker.generateRandomly()
+      return try? LuckyCardMaker.generateRandomly()
     })
   }
 }
