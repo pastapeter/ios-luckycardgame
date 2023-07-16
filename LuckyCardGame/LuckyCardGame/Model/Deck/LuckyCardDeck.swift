@@ -51,6 +51,14 @@ final class LuckyCardDeck: Deck {
     return cards.count
   }
   
+  func maxByValue() -> LuckyCard? {
+    return cards.max { $0.value < $1.value }
+  }
+  
+  func minByValue() -> LuckyCard? {
+    return cards.min(by: { $0.value < $1.value })
+  }
+  
   func add(card: LuckyCard) throws {
     if Set(cards).intersection(Set([card])).count > 0 {
       throw DeckError.DuplicateCard

@@ -10,6 +10,8 @@ import Foundation
 protocol Deck {
   var cards: [LuckyCard] { get }
   func add(card: LuckyCard) throws
+  func maxByValue() -> LuckyCard?
+  func minByValue() -> LuckyCard?
   func removeLastCard() throws -> LuckyCard
   func count() -> Int
   func remove(card: LuckyCard) throws

@@ -142,10 +142,36 @@ final class LuckyCardDeckTests: XCTestCase {
     XCTAssertTrue(result)
   }
   
-  func test_LuckyCardDeck에서_max함수를통해_가장큰값을가진카드를_찾을수있을지() throws {
+  func test_LuckyCardDeck에서_maxvalue함수를통해_가장큰값을가진카드를_찾을수있을지() throws {
+    //given
+    let input = [ LuckyCard(type: .Cat, value: .eight), LuckyCard(type: .Cow, value: .nine), LuckyCard(type: .Cow, value: .eight)]
     
+    sut = LuckyCardDeck(cards: input)
+    
+    let exp = input.max(by: { $0.value < $1.value})
+    XCTAssertEqual(sut.maxByValue(), exp)
   }
   
+  
+  func test_minValue함수를통해_가장작은값을가진카드를찾을수있는지() throws {
+    //given
+    let input = [ LuckyCard(type: .Cat, value: .eight), LuckyCard(type: .Cow, value: .nine), LuckyCard(type: .Cow, value: .eight)]
+    
+    sut = LuckyCardDeck(cards: input)
+    
+    let exp = input.min(by: { $0.value < $1.value})
+    XCTAssertEqual(sut.minByValue(), exp)
+  }
+  
+  func test_maxValue함수에서는_동일한값을가지더라도_순서대로빠지는가() throws {
+    //given
+    let input = [ LuckyCard(type: .Cat, value: .eight), LuckyCard(type: .Cow, value: .eight), LuckyCard(type: .Dog, value: .eight)]
+    
+    sut = LuckyCardDeck(cards: input)
+    
+    let exp = input.max(by: { $0.value < $1.value})
+    XCTAssertEqual(sut.maxByValue(), exp)
+  }
   
 }
 
