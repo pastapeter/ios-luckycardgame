@@ -160,7 +160,7 @@ extension GameBoardViewController {
   }
   
   private func makeCardViews(to receiver: some CardGameBoardComponent) -> [CardView] {
-    let overlappedWidth = GameBoardViewCalculator.calculateOverrlappedWidth(numberOfCard: receiver.count())
+    let overlappedWidth = GameBoardViewCalculator.calculateOverrlappedWidth(numberOfCard: receiver.countCardsInDeck())
     var cardviews: [CardView] = []
     
     if receiver is LuckyCardGamePlayer {
@@ -171,7 +171,7 @@ extension GameBoardViewController {
       }
       
     } else if receiver is LuckyGameField {
-      let frames = GameBoardViewCalculator.calculateCardFramesInField(numberOfCards: receiver.count(), cardHeight: self.cardHeight, boardHeight: self.bottomDockViewHeight)
+      let frames = GameBoardViewCalculator.calculateCardFramesInField(numberOfCards: receiver.countCardsInDeck(), cardHeight: self.cardHeight, boardHeight: self.bottomDockViewHeight)
       return zip(receiver.cards, frames).map { card, frame in
         CardView(frame: frame, cardInfo: card)
       }
