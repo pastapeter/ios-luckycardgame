@@ -14,22 +14,6 @@ import Foundation
 // struct 내부에 참조타입이 있는지 확인해야함
 // struct는 복사하기때문에, 내부 RC까지 복사가되서 RC가 높아짐
 // swfit의 힙이 rc사이클 + 힙메모리 파편화까지 일어남
-enum CardStatus {
-  case up
-  case down
-}
-
-protocol Card: AnyObject, Hashable, Comparable {
-  var status: CardStatus { get set }
-  var type: CardEmojiType { get }
-  var value: CardValue { get }
-  
-  func flip()
-}
-
-extension Card {
-  func flip() { self.status = self.status == .down ? .up : .down }
-}
 
 
 /*
@@ -42,13 +26,47 @@ extension Card {
  이것은 사실 어차피 Deck이 class이고 LuckyCard의 배열을 가지고 있기에, LuckyCard를 struct로 구현하더라도 메모리 성능 관점에서 의미가 있을까라는 생각이 든다.
  그래서 class로 지정한다.
  */
+enum CardStatus {
+  case up
+  case down
+}
 
-class LuckyCard: Card {
+protocol Card {
+  
+  var status: CardStatus { get set }
+  var type: CardEmojiType { get }
+  var value: CardValue { get }
+  func flip()
+  static func isSameValue(_ cards: Self...) -> Bool
+}
+
+extension Card {
+  func flip () { }
+}
+// protocol에 다른 프로토콜을 채택했을때 -> 언제 any를부터야하는지?
+
+class LuckyCard: Card, Hashable, Comparable {
+  
+  var status: CardStatus
+  var type: CardEmojiType
+  var value: CardValue
   
   static func < (lhs: LuckyCard, rhs: LuckyCard) -> Bool {
     lhs.value < rhs.value
   }
   
+  func flip() { self.status = self.status == .down ? .up : .down }
+  
+  static func isSameValue(_ cards: LuckyCard...) -> Bool {
+    if cards.isEmpty { return false }
+    var value = cards[0].value
+    for card in cards {
+      if card.value != value {
+        return false
+      }
+    }
+    return true
+  }
   
   static func == (lhs: LuckyCard, rhs: LuckyCard) -> Bool {
     if lhs.type != rhs.type {
@@ -62,10 +80,6 @@ class LuckyCard: Card {
     hasher.combine(type)
     hasher.combine(value)
   }
-    
-  var status: CardStatus
-  var type: CardEmojiType
-  var value: CardValue
   
   init(type: CardEmojiType, value: CardValue, status: CardStatus) {
     self.type = type

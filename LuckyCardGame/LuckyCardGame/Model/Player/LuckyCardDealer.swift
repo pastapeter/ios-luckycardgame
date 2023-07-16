@@ -40,7 +40,7 @@ final class LuckyCardDealer: LuckyCardDealerProtocol, CardAccessible {
   
   func receiveCard(_ card: LuckyCard) {
     do { try deck.add(card: card) }
-    catch (let e) { print(e.localizedDescription) }
+    catch { return }
   }
   
   func checkCards(with targetPlayerId: String, fieldCardIndex: Int) throws -> Bool {

@@ -36,8 +36,8 @@ enum StringValidationError: LocalizedError {
 
 struct CardValueValidator {
   
-  static func isvalid(_ cardValue: CardValue) throws {
-    try isvalidNumber(cardValue.value)
+  static func isvalid(_ cardValue: Int) throws {
+    try isvalidNumber(cardValue)
   }
   
   static func isvalidString(_ string: String) throws {
@@ -47,7 +47,7 @@ struct CardValueValidator {
   }
   
   static func isvalidNumber(_ num: Int) throws {
-    if (1...12).contains(num) == false {
+    if CardValue(rawValue: num) == nil {
       throw NumberValidationError.notInOneToTweleve
     }
   }
