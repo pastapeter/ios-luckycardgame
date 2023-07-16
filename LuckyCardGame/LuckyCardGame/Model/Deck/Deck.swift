@@ -12,6 +12,8 @@ protocol Deck {
   func add(card: LuckyCard) throws
   func maxByValue() -> LuckyCard?
   func minByValue() -> LuckyCard?
+  func maxCards() -> [LuckyCard]
+  func minCards() -> [LuckyCard]
   func removeLastCard() throws -> LuckyCard
   func count() -> Int
   func remove(card: LuckyCard) throws

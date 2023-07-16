@@ -173,6 +173,28 @@ final class LuckyCardDeckTests: XCTestCase {
     XCTAssertEqual(sut.maxByValue(), exp)
   }
   
+  func test_maxCards함수에서는_가장큰값을가진카드들이모두반환되는가() throws {
+    //given
+    let input = [ LuckyCard(type: .Cat, value: .eight), LuckyCard(type: .Cow, value: .eight), LuckyCard(type: .Dog, value: .eight)]
+    
+    sut = LuckyCardDeck(cards: input)
+    
+    let exp = input
+    XCTAssertEqual(sut.maxCards(), exp)
+  }
+  
+  func test_minCards함수에서는_가장작은값을가진카드들이모두반환되는가() throws {
+    //given
+    let input = [ LuckyCard(type: .Cat, value: .one), LuckyCard(type: .Cow, value: .eight), LuckyCard(type: .Dog, value: .one)]
+    
+    sut = LuckyCardDeck(cards: input)
+    
+    //when
+    //then
+    let exp = [ LuckyCard(type: .Cat, value: .one), LuckyCard(type: .Dog, value: .one)]
+    XCTAssertEqual(sut.minCards(), exp)
+  }
+  
 }
 
 

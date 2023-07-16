@@ -51,6 +51,16 @@ final class LuckyCardDeck: Deck {
     return cards.count
   }
   
+  func maxCards() -> [LuckyCard] {
+    guard let maxCard = maxByValue() else { return [] }
+    return cards.filter { $0.value == maxCard.value }
+  }
+  
+  func minCards() -> [LuckyCard] {
+    guard let minCard = minByValue() else { return [] }
+    return cards.filter { $0.value == minCard.value }
+  }
+  
   func maxByValue() -> LuckyCard? {
     return cards.max { $0.value < $1.value }
   }
