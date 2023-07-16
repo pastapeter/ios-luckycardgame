@@ -13,13 +13,15 @@ class ThreePeopleGameStrategy: GameStrategy {
   
   func gameStartAlgorithm(_ deck: LuckyCardDeck) -> LuckyGameInstruction {
     deck.shuffle()
-    CardEmojiType.allCases.forEach {
+    for emoji in CardEmojiType.allCases {
       do  {
-        try deck.remove(card: LuckyCard(type: $0, value: .twelve))
+        try deck.remove(card: LuckyCard(type: emoji, value: .twelve))
       } catch (let e) {
         print(e.localizedDescription)
+        continue
       }
     }
+    
     
     return LuckyGameInstruction(
       cardsSplited:(0..<3).map { _ in return LuckyCardDeck(cards: deck.removeLast(to: 8)) },
