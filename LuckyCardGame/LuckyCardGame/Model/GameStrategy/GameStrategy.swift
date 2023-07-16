@@ -14,6 +14,29 @@ struct LuckyGameInstruction {
 
 protocol GameStrategy {
   func gameStartAlgorithm(_ deck: LuckyCardDeck) -> LuckyGameInstruction
+  func checkForNextTurnAlgorithm(player1: CardgamePlayerable, player2: CardgamePlayerable, cardFromField: LuckyCard) throws -> Bool
+}
+
+extension GameStrategy {
+  func checkForNextTurnAlgorithm(player1: CardgamePlayerable, player2: CardgamePlayerable, cardFromField: LuckyCard) throws -> Bool {
+    
+    guard let maxFromFirstPlayer = player1.max(),
+          let minFromFirstPlayer = player1.min(),
+          let minFromlastPlayer = player2.min(),
+          let maxFromlastPlayer = player2.max()
+    else { throw GameProceedingError.GameSystemError }
+    
+    if LuckyCard.isSameValue(minFromlastPlayer, minFromFirstPlayer, cardFromField) {
+      return true
+    } else if LuckyCard.isSameValue(minFromlastPlayer, maxFromFirstPlayer, cardFromField) {
+      return true
+    } else if LuckyCard.isSameValue(maxFromlastPlayer, minFromFirstPlayer, cardFromField) {
+      return true
+    } else if LuckyCard.isSameValue(maxFromlastPlayer, maxFromFirstPlayer, cardFromField) {
+      return true
+    }
+    return false
+  }
 }
 
 enum NumberOfPlayer: Int, CaseIterable {
