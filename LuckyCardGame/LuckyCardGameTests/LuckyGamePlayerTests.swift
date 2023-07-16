@@ -96,7 +96,7 @@ final class LuckyGamePlayerTests: XCTestCase {
     
     //when
     //then
-    XCTAssertEqual(sut.count(), input.count())
+    XCTAssertEqual(sut.countCardsInDeck(), input.count())
   }
   
   func test_drawCard를부르면_가장마지막카드를주는지() {

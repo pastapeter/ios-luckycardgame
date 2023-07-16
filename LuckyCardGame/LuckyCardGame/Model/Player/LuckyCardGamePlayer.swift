@@ -13,7 +13,7 @@ class LuckyCardGamePlayer: CardgamePlayerable, Equatable {
     return lhs.id == rhs.id
   }
 
-  private var id: String
+  private(set) var id: String
   private var deck: Deck
   
   init(deck: Deck, id: String) {
@@ -23,6 +23,11 @@ class LuckyCardGamePlayer: CardgamePlayerable, Equatable {
   
   var cards: [LuckyCard] {
     return deck.cards
+  }
+  
+  func getCardFromDeck(in index: Int) -> LuckyCard? {
+    if deck.count() >= index { return nil }
+    return deck.cards[index]
   }
   
   func receiveCard(_ card: LuckyCard) {
@@ -38,7 +43,27 @@ class LuckyCardGamePlayer: CardgamePlayerable, Equatable {
     }
   }
   
-  func count() -> Int {
+  func maxCardsOfDeck() -> [LuckyCard] {
+    return deck.maxCards()
+  }
+  
+  func minCardsOfDeck() -> [LuckyCard] {
+    return deck.minCards()
+  }
+  
+  func max() -> LuckyCard? {
+    return deck.maxByValue()
+  }
+  
+  func min() -> LuckyCard? {
+    return deck.minByValue()
+  }
+  
+  func isCurrentPlayer() -> Bool {
+    return self.id == currentUserName
+  }
+  
+  func countCardsInDeck() -> Int {
     return deck.count()
   }
   

@@ -7,29 +7,24 @@
 
 import Foundation
 
-protocol CardgamePlayerable: AnyObject, CardReceivable {
-  var deck: CardDeck { get set }
-  var id: String { get }
-  func drawCard() throws -> CardDeck.DeckCard
+protocol CardSortable {
+  func sort(ascending: Bool)
 }
 
-extension CardgamePlayerable {
-  
-  func receiveCard(_ card: CardDeck.DeckCard) {
-    
-    if self.id == currentUserName {
-      card.status = .up
-    }
-    
-    do {
-      try deck.add(card: card)
-    } catch (let e) {
-      print(e.localizedDescription)
-    }
-  }
-  
-  func drawCard() throws -> CardDeck.DeckCard {
-    return try deck.removeLastCard()
-  }
-  
+protocol CardGameBoardComponent: CardReceivable, CardCountable, CardAccessible, CardSortable {
+  func maxCardsOfDeck() -> [LuckyCard]
+  func minCardsOfDeck() -> [LuckyCard]
+  func max() -> LuckyCard?
+  func min() -> LuckyCard?
+  func getCardFromDeck(in index: Int) -> LuckyCard?
+}
+
+
+protocol Identifiable {
+  var id: String { get }
+}
+
+protocol CardgamePlayerable: CardGameBoardComponent, Identifiable {
+  func drawCard() throws -> LuckyCard
+  func isCurrentPlayer() -> Bool
 }
