@@ -7,14 +7,46 @@
 
 import Foundation
 
-class LuckyGameField: CardReceivable {
+class LuckyGameField: CardGameBoardComponent {
   
-  typealias CardDeck = LuckyCardDeck
-  var deck: CardDeck
-  
-  init(deck: CardDeck) {
+  var deck: Deck
+  init(deck: Deck) {
     self.deck = deck
   }
+  
+  func countCardsInDeck() -> Int {
+    return deck.count()
+  }
+  
+  var cards: [LuckyCard] {
+    return deck.cards
+  }
+  
+  func getCardFromDeck(in index: Int) -> LuckyCard? {
+    if deck.count() <= index { return nil }
+    return deck.cards[index]
+  }
+  
+  func sort(ascending: Bool) {
+    return
+  }
+  
+  func max() -> LuckyCard? {
+    return deck.maxByValue()
+  }
+  
+  func min() -> LuckyCard? {
+    return deck.minByValue()
+  }
+  
+  func maxCardsOfDeck() -> [LuckyCard] {
+    return deck.maxCards()
+  }
+  
+  func minCardsOfDeck() -> [LuckyCard] {
+    return deck.minCards()
+  }
+
   
   func receiveCard(_ card: LuckyCard) {
     do { try deck.add(card: card) }
