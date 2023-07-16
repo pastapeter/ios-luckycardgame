@@ -7,28 +7,18 @@
 
 import Foundation
 
-enum GameError: Error {
-  case invalidNumberofPlayer
-}
-
-protocol Game {
-  var players: [LuckyCardGamePlayer] { get }
-  var field: LuckyGameField { get }
-  func startGame()
-}
-
-class LuckyCardGame: Game {
+class LuckyCardGame: Game, GameProceedDelegate {
   
-  private(set) var players: [LuckyCardGamePlayer]
-  private(set) var field: LuckyGameField
-  private var dealer: LuckyCardDealer
-  private var gameStrategy: GameStrategy
+  private(set) var players: [CardgamePlayerable]
+  private(set) var field: CardGameBoardComponent
+  private var dealer: LuckyCardDealerProtocol
+  private(set) var gameStrategy: GameStrategy
   
-  init(players: [LuckyCardGamePlayer], dealer: LuckyCardDealer, gameStrategy: GameStrategy) {
+  init(players: [CardgamePlayerable], dealer: LuckyCardDealerProtocol, gameStrategy: GameStrategy, field: CardGameBoardComponent) {
     self.players = players
     self.dealer = dealer
     self.gameStrategy = gameStrategy
-    self.field = LuckyGameField()
+    self.field = field
   }
   
 }
@@ -41,16 +31,18 @@ extension LuckyCardGame {
     let players = (0..<numberOfPlayer.rawValue).enumerated().map { LuckyCardGamePlayer(id: PlayerDataBase.currentPlayerName[$1])
     }
     let strategy = numberOfPlayer.strategy
-    let dealer = LuckyCardDealer(deck: LuckyCardDeck(), strategy: strategy)
-    self.init(players: players, dealer: dealer, gameStrategy: strategy)
+    let dealer = LuckyCardDealer(deck: LuckyCardDeck(), gameProceedDelegate: nil)
+    self.init(players: players, dealer: dealer, gameStrategy: strategy, field: LuckyGameField())
+    dealer.setDelegateForProceedGame(with: self)
   }
   
-  convenience init(players: [LuckyCardGamePlayer]) throws {
+  convenience init(players: [CardgamePlayerable]) throws {
     guard let strategy = NumberOfPlayer(rawValue: players.count)?.strategy else {
       throw GameError.invalidNumberofPlayer
     }
-    let dealer = LuckyCardDealer(deck: LuckyCardDeck(), strategy: strategy)
-    self.init(players: players, dealer: dealer, gameStrategy: strategy)
+    let dealer = LuckyCardDealer(deck: LuckyCardDeck(), gameProceedDelegate: nil)
+    self.init(players: players, dealer: dealer, gameStrategy: strategy, field: LuckyGameField())
+    dealer.setDelegateForProceedGame(with: self)
   }
   
 }
@@ -60,7 +52,28 @@ extension LuckyCardGame {
 extension LuckyCardGame {
   
   func startGame() {
-    dealer.gameStart(with: players, on: field)
+    dealer.gameStart(with: players, on: field as! LuckyGameField)
+  }
+  
+  func checkStatusForNextTurn(with targetPlayerId: String, cardIndex: Int) throws -> Bool {
+    return try dealer.checkCards(with: targetPlayerId, fieldCardIndex: cardIndex)
+  }
+  
+}
+
+// MARK: - GameDealerDelegate Extension
+extension LuckyCardGame {
+  
+  func getPlayer(whose id: String) -> CardgamePlayerable? {
+    return players.first { $0.id == id }
+  }
+  
+  func getCurrentPlayer() -> CardgamePlayerable? {
+    return players.first { $0.isCurrentPlayer() }
+  }
+  
+  func getCardFromField(in index: Int) -> LuckyCard? {
+    return field.getCardFromDeck(in: index)
   }
   
 }
