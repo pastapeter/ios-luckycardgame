@@ -8,16 +8,15 @@
 import Foundation
 
 protocol Deck {
-  associatedtype DeckCard: Card
-  var cards: [DeckCard] { get }
-  func add(card: DeckCard) throws
-  func removeLastCard() throws -> DeckCard
+  var cards: [LuckyCard] { get }
+  func add(card: LuckyCard) throws
+  func removeLastCard() throws -> LuckyCard
   func count() -> Int
-  func remove(card: DeckCard) throws
-  func removeLast(to number: Int) -> [DeckCard]
+  func remove(card: LuckyCard) throws
+  func removeLast(to number: Int) -> [LuckyCard]
   func shuffle()
   func sort(ascending: Bool)
   func printDeck()
-  func search(where predicate:(DeckCard) -> Bool) -> Bool
+  func search(where predicate:(LuckyCard) -> Bool) -> Bool
 }
 

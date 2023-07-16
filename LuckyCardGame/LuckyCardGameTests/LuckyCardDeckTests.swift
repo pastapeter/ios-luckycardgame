@@ -68,6 +68,22 @@ final class LuckyCardDeckTests: XCTestCase {
     }
   }
   
+  func test_LuckycardDeck에_add함수를호출했을때_맨앞에쌓이는지() throws {
+    //given
+    let input = LuckyCard(type: .Cat, value: .one)
+    sut = LuckyCardDeck(cards: [
+      LuckyCard(type: .Cow, value: .one),
+      LuckyCard(type: .Dog, value: .one)
+    ])
+    
+    //when
+    try sut.add(card: input)
+    
+    //then
+    XCTAssertEqual(sut.cards[0], input)
+    
+  }
+  
   func test_LuckyCardDeck가_비었을때_removeLastCard를부르면_DeckIsEmpty애러를_뿜는지() throws {
     //given
     sut = LuckyCardDeck(cards: [])
@@ -118,13 +134,16 @@ final class LuckyCardDeckTests: XCTestCase {
   func test_LuckyCardDeck에서_search함수를통해_card를찾을수있을지() throws {
     //given
     let input = LuckyCard(type: .Cat, value: .eight)
-    
     //when
     let result = sut.search {
       $0 == input
     }
     
     XCTAssertTrue(result)
+  }
+  
+  func test_LuckyCardDeck에서_max함수를통해_가장큰값을가진카드를_찾을수있을지() throws {
+    
   }
   
   

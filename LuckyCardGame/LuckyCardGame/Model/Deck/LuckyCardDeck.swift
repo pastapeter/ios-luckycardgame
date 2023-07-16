@@ -31,15 +31,14 @@ enum DeckError: LocalizedError {
 ///
 final class LuckyCardDeck: Deck {
   
-  typealias DeckCard = LuckyCard
-  private(set) var cards: [DeckCard] = []
+  private(set) var cards: [LuckyCard] = []
   
-  init(cards: [DeckCard]) {
+  init(cards: [LuckyCard]) {
     self.cards = cards
   }
   
   convenience init() {
-    var cards: [DeckCard] = []
+    var cards: [LuckyCard] = []
     for emoji in CardEmojiType.allCases {
       for value in CardValue.allCases {
         cards.append(LuckyCard(type: emoji, value: value))
@@ -52,14 +51,14 @@ final class LuckyCardDeck: Deck {
     return cards.count
   }
   
-  func add(card: DeckCard) throws {
+  func add(card: LuckyCard) throws {
     if Set(cards).intersection(Set([card])).count > 0 {
       throw DeckError.DuplicateCard
     }
     cards.insert(card, at: 0)
   }
   
-  func removeLastCard() throws -> DeckCard {
+  func removeLastCard() throws -> LuckyCard {
     if cards.isEmpty { throw DeckError.DeckIsEmpty }
     return cards.removeLast()
   }
@@ -82,7 +81,9 @@ final class LuckyCardDeck: Deck {
     for _ in (0..<number) {
       do {
         newCards.append(try self.removeLastCard())
-      } catch { break }
+      } catch {
+        return []
+      }
     }
     return newCards
   }
