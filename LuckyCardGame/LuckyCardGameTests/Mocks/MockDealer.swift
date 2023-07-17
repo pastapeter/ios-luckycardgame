@@ -12,12 +12,10 @@ final class MockDealer: LuckyCardDealerProtocol {
   
   func gameStart(with players: [CardgamePlayerable], on field: CardGameBoardComponent) {
     
-    for card in currentPlayerCards {
-      currentPlayer.receiveCard(card)
-    }
-    
-    for card in targetPlayerCards {
-      targetPlayer.receiveCard(card)
+    zip(players, cardCollection).forEach { player, cards in
+      for card in cards {
+        player.receiveCard(card)
+      }
     }
     
     for card in fieldCards {
@@ -27,9 +25,20 @@ final class MockDealer: LuckyCardDealerProtocol {
   }
   
   func checkCards(with targetPlayerId: String, fieldCardIndex: Int) throws -> Bool {
-    if targetPlayerId != targetPlayer.id { throw GameProceedingError.noTargetPlayerInThisGame }
-    if fieldCardIndex >= field.cards.count { throw GameProceedingError.GameSystemError}
+    
+    guard let targetPlayer = players.first(where: {$0.id == targetPlayerId }) else {
+      throw GameProceedingError.noTargetPlayerInThisGame
+    }
+    
+    if fieldCardIndex >= field.cards.count {
+      throw GameProceedingError.GameSystemError
+    }
+    
     guard let delegate = delegate else { throw GameProceedingError.GameSystemError }
+    
+    guard let currentPlayer = players.first(where: { $0.isCurrentPlayer() }) else {
+      throw GameProceedingError.noCurrentPlayerInThisGame
+    }
     
     return try delegate.gameStrategy.checkForNextTurnAlgorithm(player1: currentPlayer, player2: targetPlayer, cardFromField: field.cards[fieldCardIndex])
     
@@ -45,20 +54,18 @@ final class MockDealer: LuckyCardDealerProtocol {
   
   private var deck: LuckyCardDeck = .init(cards: [])
   private weak var delegate: GameProceedDelegate?
-  var currentPlayer: CardgamePlayerable
-  var targetPlayer: CardgamePlayerable
+  var players: [CardgamePlayerable] = []
+  var cardCollection: [[LuckyCard]]
   var field: CardGameBoardComponent
-  var currentPlayerCards: [LuckyCard]
-  var targetPlayerCards: [LuckyCard]
   var fieldCards: [LuckyCard]
   
-  init(currentPlayerCards: [LuckyCard], targetPlayerCards: [LuckyCard], fieldCards: [LuckyCard]) {
-    self.currentPlayer = LuckyCardGamePlayer(deck: LuckyCardDeck(cards: []), id: currentUserName)
-    self.targetPlayer = LuckyCardGamePlayer(deck: LuckyCardDeck(cards: []), id: "D")
+  init(playerCards: [[LuckyCard]], fieldCards: [LuckyCard]) {
+    self.cardCollection = playerCards
     self.field = LuckyGameField(deck: LuckyCardDeck(cards: []))
-    self.currentPlayerCards = currentPlayerCards
-    self.targetPlayerCards = targetPlayerCards
     self.fieldCards = fieldCards
+    for i in playerCards.indices {
+      players.append(LuckyCardGamePlayer(deck: LuckyCardDeck(cards: []), id: PlayerDataBase.currentPlayerName[i]))
+    }
   }
   
 }
