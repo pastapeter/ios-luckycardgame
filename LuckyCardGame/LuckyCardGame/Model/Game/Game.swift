@@ -17,4 +17,5 @@ protocol Game {
   func startGame()
   func checkStatusForNextTurn(with targetPlayerId: String, cardIndex: Int) throws -> Bool
   func sort(playerId: String)
+  func sortCardInField()
 }

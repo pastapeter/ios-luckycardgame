@@ -156,5 +156,31 @@ final class LuckyGameTests: XCTestCase {
     XCTAssertNil(sut.getCardFromField(in: input))
   }
   
+  func test_sortcardsInField함수를불렀을때_field위의카드가정렬되는가() {
+    
+    //given
+    let input = [LuckyCard(type: .Dog, value: .one), LuckyCard(type: .Dog, value: .eleven), LuckyCard(type: .Dog, value: .eight)]
+    var cards1 = [LuckyCard(type: .Cat, value: .eight), LuckyCard(type: .Cat, value: .ten), LuckyCard(type: .Cat, value: .eleven), LuckyCard(type: .Cat, value: .one), LuckyCard(type: .Cat, value: .two), LuckyCard(type: .Cat, value: .seven)]
+    var cards2 = [LuckyCard(type: .Cow, value: .ten), LuckyCard(type: .Cow, value: .one), LuckyCard(type: .Cow, value: .seven)]
+    var cards3 = [LuckyCard(type: .Dog, value: .nine)]
+    var cardForField = input
+    
+    var cardCollections = [cards1, cards2, cards3, cardForField]
+    
+    let mockDealer = MockDealer(playerCards: [cards1, cards2, cards3], fieldCards: cardForField)
+    let mockStrategy = mockGameStrategy(instruction: LuckyGameInstruction(cardsSplited: [LuckyCardDeck(cards: cards1), LuckyCardDeck(cards: cards2), LuckyCardDeck(cards: cards3)], cardsOnField:cardForField))
+    sut = LuckyCardGame(players: mockDealer.players, dealer: mockDealer, gameStrategy: mockStrategy, field: mockDealer.field)
+    
+    mockDealer.setDelegateForProceedGame(with: sut)
+    sut.startGame()
+    
+    //when
+    sut.sortCardInField()
+    //then
+    let exp = input.sorted(by: { $0.value < $1.value })
+    XCTAssertEqual(sut.field.cards, exp)
+    
+  }
+  
   
 }

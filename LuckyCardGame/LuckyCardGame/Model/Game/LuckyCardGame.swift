@@ -64,6 +64,10 @@ extension LuckyCardGame {
     player.sort(ascending: true)
   }
   
+  func sortCardInField() {
+    field.sort(ascending: true)
+  }
+  
 }
 
 // MARK: - GameDealerDelegate Extension

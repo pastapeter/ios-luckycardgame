@@ -28,7 +28,7 @@ class LuckyGameField: CardGameBoardComponent {
   }
   
   func sort(ascending: Bool) {
-    return
+    return deck.sort(ascending: ascending)
   }
   
   func max() -> LuckyCard? {
