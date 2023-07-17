@@ -59,6 +59,11 @@ extension LuckyCardGame {
     return try dealer.checkCards(with: targetPlayerId, fieldCardIndex: cardIndex)
   }
   
+  func sort(playerId: String) {
+    guard let player = getPlayer(whose: playerId) else { return }
+    player.sort(ascending: true)
+  }
+  
 }
 
 // MARK: - GameDealerDelegate Extension
