@@ -136,7 +136,7 @@ final class LuckyGameTests: XCTestCase {
     sut.startGame()
     
     //when
-    sut.sort(playerId: currentUserName)
+    sut.sort(playerId: PlayerDataBase.currentUserName)
     
     //then
     let exp = cards1.sorted()
