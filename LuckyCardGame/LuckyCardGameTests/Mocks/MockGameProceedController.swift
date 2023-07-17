@@ -11,31 +11,25 @@ import Foundation
 final class MockGameProceedController: GameProceedDelegate {
   
   func getPlayer(whose id: String) -> CardgamePlayerable? {
-    if targetPlayer.id != id { return nil }
-    return targetPlayer
+    return players.first(where: { $0.id == id })
   }
   
   func getCurrentPlayer() -> CardgamePlayerable? {
-    return currentPlayer
+    return players.first(where: { $0.isCurrentPlayer() })
   }
   
   func getCardFromField(in index: Int) -> LuckyCard? {
-    return card
+    return field.getCardFromDeck(in: index)
   }
   
   var field: CardGameBoardComponent
   var gameStrategy: GameStrategy
-  var currentPlayer: CardgamePlayerable
-  var targetPlayer: CardgamePlayerable
-  var card: LuckyCard
+  var players: [CardgamePlayerable]
   
-  init(gameStrategy: GameStrategy, currentPlayer: CardgamePlayerable, targetPlayer: CardgamePlayerable, card: LuckyCard, field: CardGameBoardComponent) {
+  init(gameStrategy: GameStrategy, players: [CardgamePlayerable], field: CardGameBoardComponent) {
     self.gameStrategy = gameStrategy
-    self.currentPlayer = currentPlayer
-    self.targetPlayer = targetPlayer
-    self.card = card
+    self.players = players
     self.field = field
-    
   }
   
 }
