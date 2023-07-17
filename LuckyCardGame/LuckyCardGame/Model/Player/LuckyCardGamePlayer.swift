@@ -32,7 +32,7 @@ class LuckyCardGamePlayer: CardgamePlayerable, Equatable {
   
   func receiveCard(_ card: LuckyCard) {
     
-    if self.id == currentUserName {
+    if self.id == PlayerDataBase.currentUserName {
       card.flip()
     }
     
@@ -60,7 +60,7 @@ class LuckyCardGamePlayer: CardgamePlayerable, Equatable {
   }
   
   func isCurrentPlayer() -> Bool {
-    return self.id == currentUserName
+    return self.id == PlayerDataBase.currentUserName
   }
   
   func countCardsInDeck() -> Int {

@@ -7,8 +7,7 @@
 
 import UIKit
 
-let currentUserName = "A"
-let currentPlayerCount: NumberOfPlayer =  .three
+
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -20,7 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       let window = UIWindow(windowScene: windowScene)
       window.overrideUserInterfaceStyle = UIUserInterfaceStyle.light
       
-      window.rootViewController = GameBoardViewController(viewModel: GameBoardViewModel(game: LuckyCardGame(numberOfPlayer: currentPlayerCount)))
+      window.rootViewController = GameBoardViewController(viewModel: GameBoardViewModel(game: LuckyCardGame(numberOfPlayer: PlayerDataBase.currentPlayerCount)))
       window.makeKeyAndVisible()
       self.window = window
     }
