@@ -53,7 +53,7 @@ final class GameBoardViewController: UIViewController {
   }
   
   required init?(coder: NSCoder) {
-    self.viewModel = GameBoardViewModel(game: LuckyCardGame(numberOfPlayer:currentPlayerCount))
+    self.viewModel = GameBoardViewModel(game: LuckyCardGame(numberOfPlayer: PlayerDataBase.currentPlayerCount))
     super.init(coder: coder)
     bind()
   }
@@ -151,7 +151,7 @@ extension GameBoardViewController {
   }
   
   private func configureGameSegmentControl() {
-    gamePlayerSegmentControl.selectedSegmentIndex = viewModel.gameType.firstIndex(of: currentPlayerCount) ?? 0
+    gamePlayerSegmentControl.selectedSegmentIndex = viewModel.gameType.firstIndex(of: PlayerDataBase.currentPlayerCount) ?? 0
     let action = UIAction { [weak self] _ in
       guard let self else { return }
       self.viewModel.changeNumberOfPlayer(by: self.viewModel.gameType[gamePlayerSegmentControl.selectedSegmentIndex])
