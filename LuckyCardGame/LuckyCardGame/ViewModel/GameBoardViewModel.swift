@@ -20,7 +20,7 @@ final class GameBoardViewModel {
   var clearGame: (() -> Void)?
   
   var numberOfPlayers: Int {
-    return game.players.count
+    return game.numberOfPlayer()
   }
   
   var gameType: [NumberOfPlayer] {

@@ -104,12 +104,12 @@ final class GameBoardViewController: UIViewController {
 extension GameBoardViewController {
   
   private func updateGameUIWhenStart(game: Game) {
-    game.players.enumerated().forEach { index, player in
-      let cardviews = self.makeCardViews(to: player)
+    (0..<game.numberOfPlayer()).forEach { index in
+      let cardviews = self.makeCardViewForPlayer(cardInfos: game.playerCards()[index])
       self.playerBoards[index].addCardViews(with: cardviews)
     }
     
-    let fieldCardViews = self.makeCardViews(to: game.field)
+    let fieldCardViews = self.makeCardViewsForField(cardInfos: game.fieldCards())
     self.bottomDockView.addCardViews(with: fieldCardViews)
   }
   
@@ -159,24 +159,22 @@ extension GameBoardViewController {
     gamePlayerSegmentControl.addAction(action, for: .valueChanged)
   }
   
-  private func makeCardViews(to receiver: some CardGameBoardComponent) -> [CardView] {
-    let overlappedWidth = GameBoardViewCalculator.calculateOverrlappedWidth(numberOfCard: receiver.countCardsInDeck())
-    var cardviews: [CardView] = []
-    
-    if receiver is LuckyCardGamePlayer {
-      cardviews = receiver.cards.enumerated().map {
-        let cardView = CardView(frame: GameBoardViewCalculator.calculateCardFrameInPlayerBoard(by: $0,                                          overlappedWidth: overlappedWidth, height: self.playerBoardHeight), cardInfo: $1
-        )
-        return cardView
-      }
-      
-    } else if receiver is LuckyGameField {
-      let frames = GameBoardViewCalculator.calculateCardFramesInField(numberOfCards: receiver.countCardsInDeck(), cardHeight: self.cardHeight, boardHeight: self.bottomDockViewHeight)
-      return zip(receiver.cards, frames).map { card, frame in
-        CardView(frame: frame, cardInfo: card)
-      }
+  private func makeCardViewForPlayer(cardInfos: [LuckyCard]) -> [CardView] {
+    let overlappedWidth = GameBoardViewCalculator.calculateOverrlappedWidth(numberOfCard: cardInfos.count)
+    var cardViews = cardInfos.enumerated().map {
+      let cardView =  CardView(frame: GameBoardViewCalculator.calculateCardFrameInPlayerBoard(by: $0,                                          overlappedWidth: overlappedWidth, height: self.playerBoardHeight), cardInfo: $1
+      )
+      return cardView
     }
-    return cardviews
+    return cardViews
+  }
+  
+  private func makeCardViewsForField(cardInfos: [LuckyCard]) -> [CardView] {
+    let overlappedWidth = GameBoardViewCalculator.calculateOverrlappedWidth(numberOfCard: cardInfos.count)
+    let frames = GameBoardViewCalculator.calculateCardFramesInField(numberOfCards: cardInfos.count, cardHeight: self.cardHeight, boardHeight: self.bottomDockViewHeight)
+    return zip(cardInfos, frames).map { card, frame in
+      CardView(frame: frame, cardInfo: card)
+    }
   }
   
 }

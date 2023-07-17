@@ -34,10 +34,10 @@ final class LuckyGameTests: XCTestCase {
     sut.startGame()
     
     //then
-    XCTAssertEqual(sut.players[0].cards, cards1)
-    XCTAssertEqual(sut.players[1].cards, cards2)
-    XCTAssertEqual(sut.players[2].cards, cards3)
-    XCTAssertEqual(sut.field.cards, cardForField)
+    XCTAssertEqual(sut.playerCards()[0], cards1)
+    XCTAssertEqual(sut.playerCards()[1], cards2)
+    XCTAssertEqual(sut.playerCards()[2], cards3)
+    XCTAssertEqual(sut.fieldCards(), cardForField)
 
   }
   
@@ -178,8 +178,72 @@ final class LuckyGameTests: XCTestCase {
     sut.sortCardInField()
     //then
     let exp = input.sorted(by: { $0.value < $1.value })
-    XCTAssertEqual(sut.field.cards, exp)
+    XCTAssertEqual(sut.fieldCards(), exp)
     
+  }
+  
+  func test_playerCards를불렀을때_카드갯수가정확히나오는지() throws {
+    //given
+   
+    var cards1 = [LuckyCard(type: .Cat, value: .eight), LuckyCard(type: .Cat, value: .ten), LuckyCard(type: .Cat, value: .eleven), LuckyCard(type: .Cat, value: .one), LuckyCard(type: .Cat, value: .two), LuckyCard(type: .Cat, value: .seven)]
+    var cards2 = [LuckyCard(type: .Cow, value: .ten), LuckyCard(type: .Cow, value: .one), LuckyCard(type: .Cow, value: .seven)]
+    var cards3 = [LuckyCard(type: .Dog, value: .nine)]
+    var cardForField = [LuckyCard(type: .Cat, value: .one)]
+    
+    var cardCollections = [cards1, cards2, cards3]
+    
+    let mockDealer = MockDealer(playerCards: [cards1, cards2, cards3], fieldCards: cardForField)
+    let mockStrategy = mockGameStrategy(instruction: LuckyGameInstruction(cardsSplited: [LuckyCardDeck(cards: cards1), LuckyCardDeck(cards: cards2), LuckyCardDeck(cards: cards3)], cardsOnField:cardForField))
+    sut = LuckyCardGame(players: mockDealer.players, dealer: mockDealer, gameStrategy: mockStrategy, field: mockDealer.field)
+    
+    mockDealer.setDelegateForProceedGame(with: sut)
+    sut.startGame()
+    
+    //when
+    let result = sut.playerCards()
+    
+    //then
+    XCTAssertEqual(result[0], cardCollections[0].reversed())
+    XCTAssertEqual(result[1], cardCollections[1].reversed())
+    XCTAssertEqual(result[2], cardCollections[2].reversed())
+    
+  }
+  
+  func test_fieldCards를불렀을때_field의카드개수가정확히나오는지() throws {
+    var cards1 = [LuckyCard(type: .Cat, value: .eight), LuckyCard(type: .Cat, value: .ten), LuckyCard(type: .Cat, value: .eleven), LuckyCard(type: .Cat, value: .one), LuckyCard(type: .Cat, value: .two), LuckyCard(type: .Cat, value: .seven)]
+    var cards2 = [LuckyCard(type: .Cow, value: .ten), LuckyCard(type: .Cow, value: .one), LuckyCard(type: .Cow, value: .seven)]
+    var cards3 = [LuckyCard(type: .Dog, value: .nine)]
+    var cardForField = [LuckyCard(type: .Cat, value: .one)]
+    
+    var cardCollections = [cards1, cards2, cards3]
+    
+    let mockDealer = MockDealer(playerCards: [cards1, cards2, cards3], fieldCards: cardForField)
+    let mockStrategy = mockGameStrategy(instruction: LuckyGameInstruction(cardsSplited: [LuckyCardDeck(cards: cards1), LuckyCardDeck(cards: cards2), LuckyCardDeck(cards: cards3)], cardsOnField:cardForField))
+    sut = LuckyCardGame(players: mockDealer.players, dealer: mockDealer, gameStrategy: mockStrategy, field: mockDealer.field)
+    
+    mockDealer.setDelegateForProceedGame(with: sut)
+    sut.startGame()
+    
+    XCTAssertEqual(cardForField.reversed(), sut.fieldCards())
+    
+  }
+  
+  func numberOfPlayer를불렀을때_player의수와일치하는지() throws {
+    var cards1 = [LuckyCard(type: .Cat, value: .eight), LuckyCard(type: .Cat, value: .ten), LuckyCard(type: .Cat, value: .eleven), LuckyCard(type: .Cat, value: .one), LuckyCard(type: .Cat, value: .two), LuckyCard(type: .Cat, value: .seven)]
+    var cards2 = [LuckyCard(type: .Cow, value: .ten), LuckyCard(type: .Cow, value: .one), LuckyCard(type: .Cow, value: .seven)]
+    var cards3 = [LuckyCard(type: .Dog, value: .nine)]
+    var cardForField = [LuckyCard(type: .Cat, value: .one)]
+    
+    var cardCollections = [cards1, cards2, cards3]
+    
+    let mockDealer = MockDealer(playerCards: [cards1, cards2, cards3], fieldCards: cardForField)
+    let mockStrategy = mockGameStrategy(instruction: LuckyGameInstruction(cardsSplited: [LuckyCardDeck(cards: cards1), LuckyCardDeck(cards: cards2), LuckyCardDeck(cards: cards3)], cardsOnField:cardForField))
+    sut = LuckyCardGame(players: mockDealer.players, dealer: mockDealer, gameStrategy: mockStrategy, field: mockDealer.field)
+    
+    mockDealer.setDelegateForProceedGame(with: sut)
+    sut.startGame()
+    
+    XCTAssertEqual(sut.numberOfPlayer(), cardCollections.count)
   }
   
   

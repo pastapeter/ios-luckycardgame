@@ -9,8 +9,8 @@ import Foundation
 
 class LuckyCardGame: Game, GameProceedDelegate {
   
-  private(set) var players: [CardgamePlayerable]
-  private(set) var field: CardGameBoardComponent
+  private var players: [CardgamePlayerable]
+  private var field: CardGameBoardComponent
   private var dealer: LuckyCardDealerProtocol
   private(set) var gameStrategy: GameStrategy
   
@@ -53,6 +53,18 @@ extension LuckyCardGame {
   
   func startGame() {
     dealer.gameStart(with: players, on: field as! LuckyGameField)
+  }
+  
+  func playerCards() -> [[LuckyCard]] {
+    return players.map { $0.cards }
+  }
+  
+  func fieldCards() -> [LuckyCard] {
+    return field.cards
+  }
+  
+  func numberOfPlayer() -> Int {
+    return players.count
   }
   
   func checkStatusForNextTurn(with targetPlayerId: String, cardIndex: Int) throws -> Bool {

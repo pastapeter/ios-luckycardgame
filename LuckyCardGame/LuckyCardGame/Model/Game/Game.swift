@@ -12,8 +12,9 @@ enum GameError: Error {
 }
 
 protocol Game {
-  var players: [CardgamePlayerable] { get }
-  var field: CardGameBoardComponent { get }
+  func playerCards() -> [[LuckyCard]]
+  func fieldCards() -> [LuckyCard]
+  func numberOfPlayer() -> Int
   func startGame()
   func checkStatusForNextTurn(with targetPlayerId: String, cardIndex: Int) throws -> Bool
   func sort(playerId: String)
